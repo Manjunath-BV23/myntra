@@ -1,0 +1,177 @@
+#pic1 {
+    background-color: rgba(255,255,255,255);
+    /* border : 1px solid red; */
+    /* margin: 1% ; */
+} 
+
+#pic2 {
+    display: flex;
+    flex-direction: row;
+    margin: 1% 0%;
+    /* border: 1px solid black; */
+}
+
+#pic2 > img {
+    width: 50%;
+} 
+
+#pic3 > img {
+    width: 100%;
+}
+
+#pic4 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    /* grid-template-columns: 50px; */
+    width: 100%;
+}
+
+#pic4 > div > img {
+    width: 100%;
+}
+
+#pic5 > img {
+    width: 100%;
+}
+
+#pic6 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+}
+
+#pic6 > div > img {
+    width: 100%;
+}
+
+#pic7 > img {
+    width: 100%;
+}
+
+#pic8 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+}
+
+#pic8 > div > img {
+    width: 100%;
+}
+
+#pic9 > img {
+    width: 100%;
+}
+
+#pic10 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    grid-gap: 10px;
+}
+
+#pic10 > div > img {
+    width: 100%;
+}
+
+#pic11 > img {
+    width: 100%;
+}
+
+#pic12 {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+}
+
+/* #pic12 > div {
+    border: 1px solid black;
+} */
+
+#pic12 > div > img {
+     width: 100%;
+}
+
+#f1 {
+    display: flex;
+    flex-direction: row;
+    padding: 2% 10%;
+    width: 80%;
+    /* border: 1px solid black; */
+    background-color: rgba(250,251,252,255);
+}
+
+#f1 > #online {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+    width: 15%;
+    text-align: left;
+}
+
+#f1 > #useful {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+    width: 15%;
+    text-align: left;
+}
+
+#f1 > #experience {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+    width: 35%;
+    text-align: left;
+}
+
+#f1 > #original {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+    width: 35%;
+    text-align: left;
+}
+
+#guarantee, #return {
+    display: flex;
+    flex-direction: row;
+}
+
+#f2 {
+    background-color: rgba(250,251,252,255);
+    padding: 0% 10%;
+    text-align: left;
+}
+
+#f3 {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    padding: 2% 10%;
+    background-color: rgba(250,251,252,255);
+}
+
+#f3 > div {
+    display: flex;
+    flex-direction: column;
+    /* border: 1px solid red; */
+}
+
+#f4 {
+    background-color: rgba(250,251,252,255);
+    padding: 0% 10%;
+    text-align: left;
+}
+
+
+#f5,#f6, #f7 {
+    background-color: rgba(250,251,252,255);
+    padding: 0% 10%;
+    text-align: left;
+}
+
+#f8, #f9 {
+    background-color: rgba(250,251,252,255);
+    padding: 0% 10%;
+    text-align: left;
+}
+
+#footer {
+    background-color: rgba(250,251,252,255);
+}

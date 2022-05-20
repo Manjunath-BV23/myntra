@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/Products/action";
 import {addCart} from '../redux/Cart/action';
 import { Store } from "@mui/icons-material";
+import { usePagination } from "use-pagination-hook";
 
 
 
@@ -13,9 +14,10 @@ export const Products = () => {
     const [product, setProduct] = useState([]);
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
-
+    
     const dispatch = useDispatch();
     const products = useSelector((store) => store.products.products);
+    const { current, pages, display, next, previous } = usePagination({ items: products, size: 20 });
 
     console.log(" Stored Products ", products);
     const cart = useSelector((store) => store.cart.cart);
@@ -33,7 +35,7 @@ export const Products = () => {
     
 
     const getData = () => {
-        axios.get(`https://my-myntra-api.herokuapp.com/products?page=${page}&limit=5&start=10`)
+        axios.get(`https://my-myntra-api.herokuapp.com/products?`)
         .then((res) => dispatch(addProduct(res.data)))
         
     }
@@ -130,9 +132,9 @@ export const Products = () => {
                     </select>
                     <input style={{ marginLeft:"2%",width:"25%",height:"35px",marginTop:"15px" }} type="text" placeholder="Search product here" onChange={(e)=>setSearch(e.target.value)}/>
                     <div className="btnDivpage">
-                        <button className="prevBtn" disabled={page === 1} onClick={()=>setPage(page-1)}>Prev</button>
-                        <p className="pageNum">{page}</p>
-                        <button className="nextBtn" onClick={()=>setPage(page+1)}>Next</button>
+                        <button className="prevBtn" disabled={current === 1} onClick={previous}>Prev</button>
+                        <p className="pageNum">{current}</p>
+                        <button className="nextBtn" disabled={current === Math.ceil(products.length/20)} onClick={next}>Next</button>
                     </div>
                 </div>
             </div>
@@ -205,7 +207,7 @@ export const Products = () => {
                 </div>
                 <div className="rightDiv">
                     {
-                        products.filter((name) =>{
+                        display.filter((name) =>{
                                 if (search === "") {
                                     return product;
                                 } else {

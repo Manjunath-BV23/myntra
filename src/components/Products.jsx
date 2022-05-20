@@ -134,7 +134,7 @@ export const Products = () => {
                     <div className="btnDivpage">
                         <button className="prevBtn" disabled={current === 1} onClick={previous}>Prev</button>
                         <p className="pageNum">{current}</p>
-                        <button className="nextBtn" disabled={current === Math.ceil(products.length/20)} onClick={next}>Next</button>
+                        <button className="nextBtn" disabled={current === pages} onClick={next}>Next</button>
                     </div>
                 </div>
             </div>

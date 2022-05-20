@@ -5,19 +5,17 @@ import { REMOVECART} from './action'
 
 
 const INITIAL_STATE = {
-	products:[],
 	cart:[],
-	currentItem:null
 }
 
 
-export const reducerCart = (state=INITIAL_STATE, action) => {
+export const cartReducer = (state=INITIAL_STATE, action) => {
 
 	switch (action.type) {
     case ADDTOCART : 
 	return {
 		...state,
-		cart:[...state.cart,action.payload],
+		cart:[...state.cart, action.payload],
 	}
 
 	case REMOVECART : 

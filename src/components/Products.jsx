@@ -3,8 +3,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../redux/reduxProducts/action";
-import {addCart} from '../redux/reduxCart/action';
+import { addProduct } from "../redux/Products/action";
+import {addCart} from '../redux/Cart/action';
+import { Store } from "@mui/icons-material";
 
 
 
@@ -13,65 +14,35 @@ export const Products = () => {
     const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
 
-    const p = useSelector(store => store.prod);
-
-    console.log(" hi "+p);
-
     const dispatch = useDispatch();
+    const products = useSelector((store) => store.products.products);
+
+    console.log(" Stored Products ", products);
+    const cart = useSelector((store) => store.cart.cart);
+
+    console.log("Cart: ", cart)
 
     useEffect(() => {
         getData()
     },[page]);
 
-        const handleClickCart = (e) => {
-           dispatch(addCart(e));
-           axios.post("http://localhost:8080/cart",e);
-        }
+        // const handleClickCart = (e) => {
+        //    dispatch(addCart(e));
+        //    axios.post("https://myntra123.herokuapp.com/productdetails",e);
+        // }
     
 
-    const getData = async () => {
-        let res = await fetch(`https://go-comet-backend.herokuapp.com/product?page=${page}&size=20`)
-        // .then((res) => dispatch(addProduct(res.data)));
-        let data = await res.json();
-        // console.log(data.product);
-        setProduct(data.product);
-        dispatch(addProduct(data));
+    const getData = () => {
+        axios.get(`https://my-myntra-api.herokuapp.com/products?page=${page}&limit=5&start=10`)
+        .then((res) => dispatch(addProduct(res.data)))
+        
     }
-
-
-    // const handleAddWishlist = (title, images, price, description, discount, off_price, ratings,brand,ageGroup,color,count,gender,sizes,category) => {
-    //     const payload = {
-    //         title: title,
-    //         images: images,
-    //         price: price,
-    //         description: description,
-    //         discount: discount,
-    //         off_price: off_price,
-    //         ratings: ratings,
-    //         brand: brand,
-    //         ageGroup: ageGroup,
-    //         color: color,
-    //         count: count,
-    //         gender: gender,
-    //         sizes: sizes,
-    //         category: category,
-    //     };
-    //       fetch("https://go-comet-backend.herokuapp.com/wishlist", {
-    //             method: "POST",
-    //             body: JSON.stringify(payload),
-    //             headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         }).then(alert(`${title} Added in the wishlist`));
-    //             console.log(payload);     
-    // }
-
 
 
    const sorting = (e) => {
         const sorting = e.target.value;
 
-        const sortRes = [...product].sort((a, b) => {
+        const sortRes = [...products].sort((a, b) => {
             if (sorting === "low") {
                 return a.price > b.price ? 1 : -1;
             }
@@ -84,8 +55,9 @@ export const Products = () => {
                  return a.ratings < b.ratings ? 1 : -1;
             }
         })
-        setProduct(sortRes)
-    }
+
+        dispatch(addProduct(sortRes))
+   }
 
     const handleCheckedMen = (e) => {
     if (e.target.checked) {
@@ -233,7 +205,7 @@ export const Products = () => {
                 </div>
                 <div className="rightDiv">
                     {
-                        product.filter((name) =>{
+                        products.filter((name) =>{
                                 if (search === "") {
                                     return product;
                                 } else {
@@ -245,7 +217,7 @@ export const Products = () => {
                                 <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>
                                 <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.category}</p>
                                 <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.discount} %OFF)</p></div>
-                                <button onClick={() => handleClickCart(e)}>ADD to Cart</button>
+                                <button onClick={() => dispatch(addCart(e))}>ADD to Cart</button>
                             </div>
                         ))
                     }

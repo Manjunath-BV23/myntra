@@ -5,58 +5,53 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo } from "../redux/reduxSignup/action";
+import {addUser } from "../redux/User/action";
 
 export const Login = () => {
-    const [matter, setMatter] = useState([]);
+
     const [data, setData] = useState({
         email:"",
         password:"",
     })
+    const users = useSelector(store => store.users.users);
+    console.log(" users ", users);
+    useEffect(()=>{
+        getData()
+    }, [])
 
     const dispatch = useDispatch();
 
-    const girish = useSelector(store => store.todo );
-    console.log(" Login "+girish);
+    const getData = () => {
+        axios.get("https://my-myntra-api.herokuapp.com/users").then((res) => dispatch(addUser(res.data)))
+    }
+    const postData = () => {
+        axios.post("https://my-myntra-api.herokuapp.com/users",data)
+        .then(() => getData())
+    }
+
 
     const {email,password} = data;
 
-    useEffect(() => {
-        getData();
-    },[])
-
-    // const getData1 = () => {
-    //     axios.get("http://localhost:3001/details")
-    //     .then((res) => setMatter(res));
-    // }
-
-    const getData = () => {
-        axios.get("https://myntra123.herokuapp.com/details")
-        .then((res) => setMatter(res.json()))
-        .then((res) => dispatch(addTodo(res.data)));
-    }
-
-    console.log(" +++ "+matter);
 
     const handleChange = e => {
         setData({...data,[e.target.name]:e.target.value});
     }
 
-    const handleSubmit = e => {
+    let result = users.filter((user) => user.email === email && user.password === password);
+    console.log("Result "+result);
+  
 
-        e.preventDefault();
+    const handleSubmit = e =>{
+        e.preventDefault()
         if(result.length>0){
             window.location.href = "./";
             // getData();
         }else{
-            window.location.href = "./";
-            // alert("wrong credintials");
+            // window.location.href = "./";
+            alert("wrong credintials");
         }
     }
     
-    let result = matter.filter((user) => user.email === email && user.password === password);
-    console.log("Result "+result);
-    console.log("Matter "+matter);
 
 
     return (

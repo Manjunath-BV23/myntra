@@ -4,15 +4,11 @@ import { useEffect } from "react";
 import {useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addTodo } from "../redux/reduxSignup/action";
+import { addUser } from "../redux/User/action";
 import "./Signup.css";
 
 export const Signup = () => {
-    const dispatch = useDispatch();
-
-    const m = useSelector(store => store.todo);
-    console.log(" SignUp "+m);
-
+    
     const [data, setData] = useState({
         firstname:"",
         lastname:"",
@@ -23,19 +19,25 @@ export const Signup = () => {
         status:false,
     })
 
-    const {firstname,lastname,email,number,password,confirmPassword} = data;
+    const dispatch = useDispatch();
+    const users = useSelector(store => store.users.users);
+    console.log(" users ", users);
 
     useEffect(() => {
         // console.log("Last", manju)
-        getTodo();
+        getData();
     },[])
+  
+
+    const {firstname,lastname,email,number,password,confirmPassword} = data;
+
 
     const handleChange = e => {
         setData({...data,[e.target.name]:e.target.value});
     }
-
-    const getTodo = () => {
-        axios.get("https://myntra123.herokuapp.com/details").then((res) => { dispatch(addTodo(res.data)) }).then(() => {console.log("Posted")})
+// dispatch(addUser(res.data))
+    const getData = () => {
+        axios.get("https://my-myntra-api.herokuapp.com/users").then((res) => dispatch(addUser(res.data)))
     }
 
     const handleSubmit = e => {
@@ -43,16 +45,14 @@ export const Signup = () => {
         if(password !== confirmPassword){
             alert("password doesn't match");
         }else{
-            // axios.post("http://localhost:3001/details",data).then(() => getTodo())
-            //console.log(data);
-            window.location.href="/login";
             postData();
+            window.location.href="/login";
         }
     }
 
     const postData = () => {
-        axios.post("https://myntra123.herokuapp.com/details",data)
-        .then(() => getTodo())
+        axios.post("https://my-myntra-api.herokuapp.com/users",data)
+        .then(() => getData())
     }
 
     return (

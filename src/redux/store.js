@@ -1,42 +1,28 @@
-import { compose, createStore } from "redux";
-import { reducerSignup } from "./reduxSignup/reducer";
-import { reducerProducts } from "./reduxProducts/reducer";
+import { applyMiddleware, createStore } from "redux";
+import {userReducer } from "./User/reducer";
+import { productReducer } from "./Products/reducer";
 import { combineReducers } from "redux";
 import { composeWithDevTools } from '@redux-devtools/extension'
-import { reducerCart } from "./reduxCart/reducer";
+import { cartReducer } from "./Cart/reducer";
 
 const rootReducer = combineReducers({
-    signup :reducerSignup,
-    products : reducerProducts,
-    cart : reducerCart,
+    users: userReducer,
+    products : productReducer,
+    cart : cartReducer,
 })
 
+const loggerMiddleware = (store)=>(next)=>(action) =>{
+    console.time("t1");
+    next(action);
+    console.timeEnd("t1")
+}
 
 export const store = createStore (
     rootReducer,
-    composeWithDevTools(),
+    applyMiddleware(loggerMiddleware)
     // window._REDUX_DEVTOOLS_EXTENSION_ && window._REDUX_DEVTOOLS_EXTENSION_()
 )
 
 console.log("initial",store.getState());
 
 
-// import {dataReducer} from './storeData/dataReducer.js';
-// import {cartReducer} from './Cart/cartReducer'
-// import { combineReducers } from "redux";
-// import {reducer as SignUpReducer } from "./signup/reducer";
-// import { reducer as LogInReducer} from "./login/reducer"
-// import { createStore } from 'redux';
-// import { composeWithDevTools } from '@redux-devtools/extension';
-
-// const rootReducer = combineReducers({
-//     Data : dataReducer,
-// 	Cart : cartReducer,
-//   signup:SignUpReducer,
-//   login:LogInReducer
-// })
-
-// const store = createStore(
-//  rootReducer,
-//   composeWithDevTools()
-// );

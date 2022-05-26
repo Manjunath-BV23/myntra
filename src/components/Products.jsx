@@ -12,7 +12,7 @@ import { usePagination } from "use-pagination-hook";
 
 export const Products = () => {
     const [product, setProduct] = useState([]);
-    const [page, setPage] = useState(1);
+    // const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     
     const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export const Products = () => {
 
     useEffect(() => {
         getData()
-    },[page]);
+    },[]);
 
         // const handleClickCart = (e) => {
         //    dispatch(addCart(e));
@@ -35,7 +35,7 @@ export const Products = () => {
     
 
     const getData = () => {
-        axios.get(`https://my-myntra-api.herokuapp.com/products?`)
+        axios.get(`https://my-myntra-api.herokuapp.com/products`)
         .then((res) => dispatch(addProduct(res.data)))
         
     }
@@ -63,57 +63,57 @@ export const Products = () => {
 
     const handleCheckedMen = (e) => {
     if (e.target.checked) {
-            const rows = [...product].filter((row) => row.gender === "Men");
-            setProduct(rows);
+            const rows = [...products].filter((row) => row.gender === "Men");
+            dispatch(addProduct(rows));
         }
     };
 
     const handleCheckedWomen = (e) => {
         if (e.target.checked) {
-            const rows = [...product].filter((row) => row.gender === "Women");
-            setProduct(rows);
+            const rows = [...products].filter((row) => row.gender === "Women");
+            dispatch(addProduct(rows));
         }
     }
 
     const handleCheckedKids = (e) => {
         if (e.target.checked) {
-        const rows = [...product].filter((row) => row.gender === "Boys");
-        setProduct(rows);
+        const rows = [...products].filter((row) => row.gender === "Boys");
+        dispatch(addProduct(rows));
         }
     }
 
      const handleCheckedGirls = (e) => {
          if (e.target.checked) {
-             const rows = [...product].filter((row) => row.gender === "Girls");
-             setProduct(rows);
+             const rows = [...products].filter((row) => row.gender === "Girls");
+             dispatch(addProduct(rows));
          }
     }
 
     const handleOne = (e) => {
          if (e.target.checked) {
-             const rows = [...product].filter((row) => row.price > 0 && row.price <= 1000);
-             setProduct(rows);
+             const rows = [...products].filter((row) => row.price > 0 && row.price <= 1000);
+             dispatch(addProduct(rows));
          }
     }
 
     const handleTwo = (e) => {
          if (e.target.checked) {
-             const rows = [...product].filter((row) => row.price > 1000 && row.price <= 1500);
-             setProduct(rows);
+             const rows = [...products].filter((row) => row.price > 1000 && row.price <= 1500);
+             dispatch(addProduct(rows));
          }
     }
 
       const handleThree = (e) => {
          if (e.target.checked) {
-             const rows = [...product].filter((row) => row.price > 1500 && row.price <= 2000);
-             setProduct(rows);
+             const rows = [...products].filter((row) => row.price > 1500 && row.price <= 2000);
+             dispatch(addProduct(rows));
          }
     }
 
       const handleFour = (e) => {
          if (e.target.checked) {
-             const rows = [...product].filter((row) => row.price > 2000 && row.price <= 2500);
-             setProduct(rows);
+             const rows = [...products].filter((row) => row.price > 2000 && row.price <= 2500);
+             dispatch(addProduct(rows));
          }
     }
 

@@ -24,10 +24,10 @@ export const Login = () => {
     const getData = () => {
         axios.get("https://my-myntra-api.herokuapp.com/users").then((res) => dispatch(addUser(res.data)))
     }
-    const postData = () => {
-        axios.post("https://my-myntra-api.herokuapp.com/users",data)
-        .then(() => getData())
-    }
+    // const postData = () => {
+    //     axios.post("https://my-myntra-api.herokuapp.com/users",data)
+    //     .then(() => getData())
+    // }
 
 
     const {email,password} = data;

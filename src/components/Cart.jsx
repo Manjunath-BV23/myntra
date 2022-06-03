@@ -12,6 +12,7 @@ import {removeCart} from '../redux/Cart/action';
 import {useDispatch} from 'react-redux';
 import { useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export const Cart = () => {
     // const [cart, setCart] = useState([]);
@@ -59,6 +60,7 @@ export const Cart = () => {
     // const data = useSelector((state) => state.Cart.cart)
 
     return (
+        <div className="main">
         <div className="rightDiv">
             {cart.length == 0 ? <><img src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></>:
                                 <>{cart.map((e) => (
@@ -74,6 +76,12 @@ export const Cart = () => {
                             </>
              }
                             
+        </div>
+        {cart.length > 0 ? <div className="leftdiv">
+            <button className="payment"><Link to = "/payment">Proceed to Payment</Link></button>
+        </div> : ""}
+        
+
         </div>
     )
 }

@@ -145,6 +145,7 @@ input:focus{
     grid-template-columns:repeat(4,23%);
     grid-gap:2%;
     margin-left:2%;
+	width: 75%;
     white-space: nowrap;
 }
 
@@ -167,4 +168,19 @@ input:focus{
     width: 100%;
     left: 0;
   
+}
+
+.leftdiv {
+	width: 20%;
+	height: 300px;
+	/* border: 1px solid red; */
+	justify-content: center;
+	padding-top: 20%;
+}
+.main {
+	display: flex;
+}
+.payment {
+	height: 20px;
+	background-color: aqua;
 }

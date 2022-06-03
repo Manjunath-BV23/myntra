@@ -11,21 +11,22 @@ import { usePagination } from "use-pagination-hook";
 
 
 export const Products = () => {
-    const [product, setProduct] = useState([]);
+    const [productData, setProductData] = useState([]);
     // const [page, setPage] = useState(1);
     const [search, setSearch] = useState("");
     
     const dispatch = useDispatch();
     const products = useSelector((store) => store.products.products);
-    const { current, pages, display, next, previous } = usePagination({ items: products, size: 20 });
+    const { current, pages, display, next, previous } = usePagination({ items: productData, size: 20 });
 
     console.log(" Stored Products ", products);
     const cart = useSelector((store) => store.cart.cart);
 
-    console.log("Cart: ", cart)
+    // console.log("Cart: ", cart)
 
     useEffect(() => {
         getData()
+        setProductData(products)
     },[]);
 
         // const handleClickCart = (e) => {
@@ -36,9 +37,14 @@ export const Products = () => {
 
     const getData = () => {
         axios.get(`https://my-myntra-api.herokuapp.com/products`)
-        .then((res) => dispatch(addProduct(res.data)))
-        
+        .then((res) => putData(res))
     }
+
+    const putData = (res) => {
+        setProductData(res.data);
+        dispatch(addProduct(res.data))
+    }
+    console.log("DAta:", productData)
 
 
    const sorting = (e) => {
@@ -58,62 +64,76 @@ export const Products = () => {
             }
         })
 
-        dispatch(addProduct(sortRes))
+        setProductData(sortRes)
    }
 
+   const filterBrand = (e) => {
+    const brand = e.target.value;
+    console.log(e.target.value)
+    const filterData = products.filter((e) => e.brand === brand);
+    setProductData(filterData)
+}
+
     const handleCheckedMen = (e) => {
+        console.log(e.target.value)
     if (e.target.checked) {
-            const rows = [...products].filter((row) => row.gender === "Men");
-            dispatch(addProduct(rows));
+            const rows = products.filter((row) => row.gender === "Men");
+            setProductData(rows);
         }
     };
 
     const handleCheckedWomen = (e) => {
+        console.log(e.target.value)
+
         if (e.target.checked) {
-            const rows = [...products].filter((row) => row.gender === "Women");
-            dispatch(addProduct(rows));
+            const rows = products.filter((row) => row.gender === "Women");
+            setProductData(rows);
         }
     }
 
     const handleCheckedKids = (e) => {
+        console.log(e.target.value)
+
         if (e.target.checked) {
-        const rows = [...products].filter((row) => row.gender === "Boys");
-        dispatch(addProduct(rows));
+        const rows = products.filter((row) => row.gender === "Boys");
+        setProductData(rows);
         }
     }
 
      const handleCheckedGirls = (e) => {
+        console.log(e.target.value)
+
          if (e.target.checked) {
              const rows = [...products].filter((row) => row.gender === "Girls");
-             dispatch(addProduct(rows));
+             setProductData(rows);
          }
     }
 
     const handleOne = (e) => {
          if (e.target.checked) {
              const rows = [...products].filter((row) => row.price > 0 && row.price <= 1000);
-             dispatch(addProduct(rows));
+             setProductData(rows);
          }
     }
 
     const handleTwo = (e) => {
          if (e.target.checked) {
-             const rows = [...products].filter((row) => row.price > 1000 && row.price <= 1500);
-             dispatch(addProduct(rows));
+             const rows = products.filter((row) => row.price > 1000 && row.price <= 1500);
+             setProductData(rows);
          }
     }
 
       const handleThree = (e) => {
          if (e.target.checked) {
              const rows = [...products].filter((row) => row.price > 1500 && row.price <= 2000);
-             dispatch(addProduct(rows));
+             setProductData(rows);
          }
     }
 
       const handleFour = (e) => {
          if (e.target.checked) {
              const rows = [...products].filter((row) => row.price > 2000 && row.price <= 2500);
-             dispatch(addProduct(rows));
+             setProductData(rows);
          }
     }
 
@@ -164,15 +184,15 @@ export const Products = () => {
                     <hr/>
                       <div className="checkDiv1">
                         <h4>BRAND</h4>
-                         <input type="checkbox" /><label>H&M</label>
+                         <input type="checkbox" value = "H&M" onChange={filterBrand}/><label>H&M</label>
                         <br/>
-                        <input type="checkbox" /><label>Roadster</label>
+                        <input type="checkbox" value = "NOVA" onChange={filterBrand}/><label>NOVA</label>
                         <br/>
-                        <input type="checkbox" /><label>Adidas</label>
+                        <input type="checkbox" value = "LOreal" onChange={filterBrand}/><label>LOreal</label>
                         <br/>
-                        <input type="checkbox" /><label>Nike</label>
+                        <input type="checkbox" value = "TNW" onChange={filterBrand} /><label>TNW</label>
                          <br/>
-                        <input type="checkbox" /><label>PUMA</label>
+                        <input type="checkbox" value = "CORE" onChange={filterBrand}/><label>CORE</label>
                          <br/>
                         <input type="checkbox"/><label>HRX</label>
                          <br/>
@@ -185,7 +205,7 @@ export const Products = () => {
                     <hr/>
                       <div className="checkDiv1">
                         <h5>DISCOUNT RANGE</h5>
-                         <input type="checkbox" /><label>10% and above</label>
+                         <input type="checkbox" value = {10}/><label>10% and above</label>
                         <br/>
                         <input type="checkbox" /><label>20% and above</label>
                         <br/>
@@ -209,7 +229,7 @@ export const Products = () => {
                     {
                         display.filter((name) =>{
                                 if (search === "") {
-                                    return product;
+                                    return productData;
                                 } else {
                                     return name.category.toLowerCase().includes(search.toLowerCase());
                                 }

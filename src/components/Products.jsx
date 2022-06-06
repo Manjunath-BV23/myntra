@@ -29,10 +29,6 @@ export const Products = () => {
         setProductData(products)
     },[]);
 
-        // const handleClickCart = (e) => {
-        //    dispatch(addCart(e));
-        //    axios.post("https://myntra123.herokuapp.com/productdetails",e);
-        // }
     
 
     const getData = () => {

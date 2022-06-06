@@ -44,7 +44,7 @@ export const Login = () => {
     const handleSubmit = e =>{
         e.preventDefault()
         if(result.length>0){
-            window.location.href = "./";
+            window.location.href = "/products";
             // getData();
         }else{
             // window.location.href = "./";

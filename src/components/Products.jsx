@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addProduct } from "../redux/Products/action";
+import { getProduct, getProductLoading} from "../redux/Products/action";
 import {addCart} from '../redux/Cart/action';
 import { Store } from "@mui/icons-material";
 import { usePagination } from "use-pagination-hook";
@@ -11,12 +11,26 @@ import { usePagination } from "use-pagination-hook";
 
 
 export const Products = () => {
+    // export const addData = (data) => {
+    //     // console.log("I'm here")
+    //     setProductData(data)
+    //     // dispatch(addProduct(res.data))
+    // }
+
     const [productData, setProductData] = useState([]);
     // const [page, setPage] = useState(1);
+    const [tick, setTick] = useState(false)
+    const [brandfilter, setBrandfilter] = useState(false)
+    const [pricefilter, setPricefilter] = useState(false)
+
+
+    
     const [search, setSearch] = useState("");
     
     const dispatch = useDispatch();
-    const products = useSelector((store) => store.products.products);
+    const {products, loading, error} = useSelector((store) => store.products);
+    console.log(loading, error)
+
     const { current, pages, display, next, previous } = usePagination({ items: productData, size: 20 });
 
     console.log(" Stored Products ", products);
@@ -26,27 +40,30 @@ export const Products = () => {
 
     useEffect(() => {
         getData()
-        setProductData(products)
     },[]);
 
+    const getProductData = () => async (dispatch) => {
+        dispatch(getProductLoading())
     
-
-    const getData = () => {
-        axios.get(`https://my-myntra-api.herokuapp.com/products`)
-        .then((res) => putData(res))
-    }
-
-    const putData = (res) => {
+        const res = await axios.get(`https://my-myntra-api.herokuapp.com/products`)
+        dispatch(getProduct(res.data))
+        
         setProductData(res.data);
-        dispatch(addProduct(res.data))
     }
+
+   
+
+    const getData = (addData) => {
+        dispatch(getProductData(addData))
+    }
+
     console.log("DAta:", productData)
 
 
    const sorting = (e) => {
         const sorting = e.target.value;
 
-        const sortRes = [...products].sort((a, b) => {
+        const sortRes = [...productData].sort((a, b) => {
             if (sorting === "low") {
                 return a.price > b.price ? 1 : -1;
             }
@@ -67,14 +84,37 @@ export const Products = () => {
     const brand = e.target.value;
     console.log(e.target.value)
     const filterData = products.filter((e) => e.brand === brand);
+    // if(brand == "H&M"){
+
+    //     setProductData(filterData)
+    // }else {
+    //     setProductData([...productData, ...filterData])
+    // }
+    if(brandfilter === false){
+        setProductData(filterData)
+        setBrandfilter(true)
+    }else {
+        setProductData([...productData, ...filterData]);
+    }
+}
+const filterDiscount = (e) => {
+    const discount = e.target.value;
+    console.log(e.target.value)
+    const filterData = productData.filter((e) => e.discount >= discount);
+    console.log("DIs: ", filterData)
     setProductData(filterData)
 }
 
     const handleCheckedMen = (e) => {
         console.log(e.target.value)
     if (e.target.checked) {
-            const rows = products.filter((row) => row.gender === "Men");
-            setProductData(rows);
+            const rows = [...products].filter((row) => row.gender === "Men");
+            if(tick === false){
+                setProductData(rows)
+                setTick(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
         }
     };
 
@@ -82,8 +122,13 @@ export const Products = () => {
         console.log(e.target.value)
 
         if (e.target.checked) {
-            const rows = products.filter((row) => row.gender === "Women");
-            setProductData(rows);
+            const rows = [...products].filter((row) => row.gender === "Women");
+            if(tick == false){
+                setProductData(rows)
+                setTick(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
         }
     }
 
@@ -91,8 +136,13 @@ export const Products = () => {
         console.log(e.target.value)
 
         if (e.target.checked) {
-        const rows = products.filter((row) => row.gender === "Boys");
-        setProductData(rows);
+        const rows = [...products].filter((row) => row.gender === "Boys");
+            if(tick == false){
+                setProductData(rows)
+                setTick(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
         }
     }
 
@@ -101,39 +151,65 @@ export const Products = () => {
 
          if (e.target.checked) {
              const rows = [...products].filter((row) => row.gender === "Girls");
-             setProductData(rows);
+             if(tick == false){
+                setProductData(rows)
+                setTick(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
          }
     }
 
     const handleOne = (e) => {
          if (e.target.checked) {
-             const rows = [...products].filter((row) => row.price > 0 && row.price <= 1000);
-             setProductData(rows);
+             const rows = [...productData].filter((row) => row.price > 0 && row.price <= 1000);
+             if(pricefilter == false){
+                setProductData(rows)
+                setPricefilter(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
          }
     }
 
     const handleTwo = (e) => {
          if (e.target.checked) {
-             const rows = products.filter((row) => row.price > 1000 && row.price <= 1500);
-             setProductData(rows);
+             const rows = productData.filter((row) => row.price > 1000 && row.price <= 1500);
+             if(pricefilter == false){
+                setProductData(rows)
+                setPricefilter(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
          }
     }
 
       const handleThree = (e) => {
          if (e.target.checked) {
-             const rows = [...products].filter((row) => row.price > 1500 && row.price <= 2000);
-             setProductData(rows);
+             const rows = [...productData].filter((row) => row.price > 1500 && row.price <= 2000);
+             if(pricefilter == false){
+                setProductData(rows)
+                setPricefilter(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
          }
     }
 
       const handleFour = (e) => {
          if (e.target.checked) {
-             const rows = [...products].filter((row) => row.price > 2000 && row.price <= 2500);
-             setProductData(rows);
+             const rows = [...productData].filter((row) => row.price > 2000 && row.price <= 2500);
+             if(pricefilter == false){
+                setProductData(rows)
+                setPricefilter(true)
+            }else {
+                setProductData([...productData, ...rows]);
+            }
          }
     }
+    // loading ? ("Loading...."): error ?("Error Occured") :
 
-    return (
+    return  (
         <div className="mainDiv">
             <div style={{marginLeft:"2%",lineHeight:"30%"}}>
                 <p style={{fontSize:"18px"}}>Home</p>
@@ -182,7 +258,7 @@ export const Products = () => {
                         <h4>BRAND</h4>
                          <input type="checkbox" value = "H&M" onChange={filterBrand}/><label>H&M</label>
                         <br/>
-                        <input type="checkbox" value = "NOVA" onChange={filterBrand}/><label>NOVA</label>
+                        <input type="checkbox" value = "Maybelline" onChange={filterBrand}/><label>Maybelline</label>
                         <br/>
                         <input type="checkbox" value = "LOreal" onChange={filterBrand}/><label>LOreal</label>
                         <br/>
@@ -201,23 +277,23 @@ export const Products = () => {
                     <hr/>
                       <div className="checkDiv1">
                         <h5>DISCOUNT RANGE</h5>
-                         <input type="checkbox" value = {10}/><label>10% and above</label>
+                         <input type="checkbox" value = {10} onChange={filterDiscount}/><label>10% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>20% and above</label>
+                        <input type="checkbox" value = {20} onChange={filterDiscount} /><label>20% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>30% and above</label>
+                        <input type="checkbox" value = {30} onChange={filterDiscount} /><label>30% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>40% and above</label>
+                        <input type="checkbox" value = {40} onChange={filterDiscount} /><label>40% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>50% and above</label>
+                        <input type="checkbox" value = {50} onChange={filterDiscount}/><label>50% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>60% and above</label>
+                        <input type="checkbox" value = {60} onChange={filterDiscount}/><label>60% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>70% and above</label>
+                        <input type="checkbox" value = {70} onChange={filterDiscount}/><label>70% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>80% and above</label>
+                        <input type="checkbox" value = {80} onChange={filterDiscount}/><label>80% and above</label>
                         <br/>
-                        <input type="checkbox" /><label>90% and above</label>
+                        <input type="checkbox" value = {90} onChange={filterDiscount}/><label>90% and above</label>
                    </div>
                    
                 </div>
@@ -229,7 +305,7 @@ export const Products = () => {
                                 } else {
                                     return name.category.toLowerCase().includes(search.toLowerCase());
                                 }
-                        }).map((e) => (
+                            }).map((e) => (
                             <div className="mainBox" key={e._id}>
                                 <img className="prodImg" src={e.images} alt="" />
                                 <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>

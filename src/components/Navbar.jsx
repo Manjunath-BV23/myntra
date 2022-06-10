@@ -464,7 +464,7 @@ export const Navbar = () => {
                             {/* <button>LOGIN/SIGNUP</button> */}
                             <Link className="login" to="/login">LOGIN/SIGNUP</Link>
                         <hr />
-                        <a href="#">orders</a>
+                        <a href="/orders">orders</a>
                         <a href="#">wishlist</a>
                         <a href="#">Gift Cards</a>
                         <a href="#">Contact us</a>

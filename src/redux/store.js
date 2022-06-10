@@ -1,9 +1,9 @@
-import { applyMiddleware, createStore } from "redux";
+import { applyMiddleware, compose, createStore, } from "redux";
 import {userReducer } from "./User/reducer";
 import { productReducer } from "./Products/reducer";
 import { combineReducers } from "redux";
-import { composeWithDevTools } from '@redux-devtools/extension'
 import { cartReducer } from "./Cart/reducer";
+import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
     users: userReducer,
@@ -12,15 +12,19 @@ const rootReducer = combineReducers({
 })
 
 const loggerMiddleware = (store)=>(next)=>(action) =>{
-    console.time("t1");
+    console.log("action: ", action)
+    if(typeof action == "function"){
+        return action(store.dispatch)
+    }
     next(action);
-    console.timeEnd("t1")
 }
 
 export const store = createStore (
     rootReducer,
-    applyMiddleware(loggerMiddleware)
-    // window._REDUX_DEVTOOLS_EXTENSION_ && window._REDUX_DEVTOOLS_EXTENSION_()
+    applyMiddleware(thunk)
+    // compose(applyMiddleware(thunk), window._REDUX_DEVTOOLS_EXTENSION_ && window._REDUX_DEVTOOLS_EXTENSION_())
+    
+    
 )
 
 console.log("initial",store.getState());

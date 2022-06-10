@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import pic from "../images/image1.png";
+import { getProductData } from '../redux/Products/action';
 import './Home.css';
 import data from "./json/data.json";
 import info from "./json/info.json";
@@ -9,6 +11,17 @@ import stuff from "./json/stuff.json";
 
 // console.log(data)
 export const Home = () => {
+    const {products, loading, error} = useSelector((store) => store.products);
+    console.log("Home: ", products)
+    const dispatch = useDispatch()
+    // useEffect(() => {
+    //     getData()
+    // },[]);
+
+
+    // const getData = () => {
+    //     dispatch(getProductData())
+    // }
   return (
     <div style={{paddingTop:"6%"}}>
         {/* <SwipeableTextMobileStepper/> */}

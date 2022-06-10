@@ -7,6 +7,8 @@ import { Signup } from './components/Signup';
 import { Products } from './components/Products';
 import { Cart } from './components/Cart';
 import { Payment } from './components/Payment';
+import { Successful } from './components/Successful';
+import { Orders } from './components/Orders';
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path="/products" element={<Products />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
         <Route path="/payment" element={<Payment />}></Route>
+        <Route path="/successful" element={<Successful />}></Route>
+        <Route path="/orders" element={<Orders />}></Route>
         
       </Routes>
     </div>

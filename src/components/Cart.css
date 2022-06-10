@@ -139,6 +139,26 @@ input:focus{
 .rightDiv {
     padding-top: 5%;
 }
+.price {
+	display: flex;
+	justify-content: space-between;
+}
+.paymentDiv {
+	border: 2px solid red;
+	margin-top: 150px;
+	background-color: aqua;
+	padding: 10px;
+	margin-right: 20px;
+	width: 40%;
+}
+.place{
+	width: 100%;
+	height: 30px;
+	background-color: #E73A6A;
+}
+.coupon {
+	color: blue
+}
 
 .rightDiv{
     display:grid;
@@ -158,20 +178,21 @@ input:focus{
 .mainBox {
  position: relative;
    z-index: 1;
+   height: 300px;
 }
 
 .mainBox:hover .overlay {
     display: block;
 }
   
-.prodImg{
-    width: 100%;
+.emptyImg{
+    /* width: 50%; */
     left: 0;
   
 }
 
 .leftdiv {
-	width: 20%;
+	width: 50%;
 	height: 300px;
 	/* border: 1px solid red; */
 	justify-content: center;
@@ -180,7 +201,7 @@ input:focus{
 .main {
 	display: flex;
 }
-.payment {
+/* .payment {
 	height: 20px;
 	background-color: aqua;
-}
+} */

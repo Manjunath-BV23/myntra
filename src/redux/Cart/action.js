@@ -2,7 +2,7 @@ export const ADDTOCART = "ADDTOCART"
 export const REMOVECART = "REMOVECART"
 export const ADJUSTQTY = " ADJUSTQTY"
 export const CURRENTITEM = "CURRENTITEM"
-
+export const ADD_ORDER = "ADD_ORDER"
 
 export const addCart = (id) => {
 	return {
@@ -41,6 +41,15 @@ export const currentItem = (id,value) => {
 		payload:{
 		 id:id,
 		 qty:value
+		}
+	}
+	
+}
+export const addOrder = (id) => {
+	return {
+		type: ADD_ORDER,
+		payload:{
+		 id:id
 		}
 	}
 	

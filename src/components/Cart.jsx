@@ -15,12 +15,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const Cart = () => {
-    // const [cart, setCart] = useState([]);
+    // const [data, setData] = useState([]);
 
     const dispatch = useDispatch();
     const cart = useSelector((store) => store.cart.cart);
     console.log("CArt in cartpage: ", cart)
     const [showMenu,setShowMenu] = useState(false)
+    let totalPrice = 0;
+    let disPrice = 0;
+    for(var i = 0; i<cart.length; i++){
+        totalPrice += cart[i].id.price
+        disPrice += cart[i].id.price*(Number(cart[i].id.discount)/100)
+    }
+    let totalAmount = totalPrice-disPrice;
 
     // useEffect(() => {
     //     postData();
@@ -55,6 +62,9 @@ export const Cart = () => {
     function handleClickSignUp() {
 		navigate('/signup')
 	}
+    const Payment = () => {
+        navigate("/payment")
+    }
 
 
     // const data = useSelector((state) => state.Cart.cart)
@@ -62,7 +72,7 @@ export const Cart = () => {
     return (
         <div className="main">
         <div className="rightDiv">
-            {cart.length == 0 ? <><img src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></>:
+            {cart.length < 1 ? <div><img className="emptyImg" src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></div>:
                                 <>{cart.map((e) => (
                                     <div className="mainBox" key={e.id._id}>
                                         <img className="prodImg" src={e.id.images} alt="" />
@@ -77,9 +87,38 @@ export const Cart = () => {
              }
                             
         </div>
-        {cart.length > 0 ? <div className="leftdiv">
-            <button className="payment"><Link to = "/payment">Proceed to Payment</Link></button>
-        </div> : ""}
+        <div className="paymentDiv">
+            <h3>PRICE DETAILS ({cart.length} Items)</h3>
+            <div>
+                <div className="price">
+                    <p>Total MRP</p>
+                    <p>{totalPrice}/-</p>
+                </div>
+                <div className="price">
+                    <p>Discount on MRP</p>
+                    <p>{disPrice}/-</p>
+                </div>
+                <div className="price">
+                    <p>Coupon Discount</p>
+                    <p className="coupon">Apply Coupon</p>
+                </div>
+                <div className="price">
+                    <p>Early Access Fee</p>
+                    <p>99/-</p>
+                </div>
+                <div className="price">
+                    <p>Convenience Fee <strong>Know more</strong></p>
+                    <p><strike>99/-</strike> FREE</p>
+                </div>
+                <hr />
+                <div className="price">
+                    <p>Total Amount</p>
+                    <p>{totalAmount}/-</p>
+                </div>
+                <button className="place" onClick={Payment}>Make Payment</button>
+            </div>
+        </div>
+        
         
 
         </div>

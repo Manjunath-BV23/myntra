@@ -19,7 +19,7 @@
 
     display:grid;
     grid-template-columns:repeat(4,23%);
-    grid-gap:5%;
+    grid-gap:10px;
     margin-left:2%;
     white-space: nowrap;
     /* border: 1px solid red; */
@@ -32,7 +32,9 @@
 
 .mainBox {
   position: relative;
-    z-index: 1;
+  margin-left: 10px;
+  height: 200px;
+  z-index: 1;
 }
 
 /* .overlay {
@@ -48,7 +50,8 @@
 }
 
 .prodImg{
-  width: 100%;
+  width: 80%;
+  height:60%;
   left: 0;
 
 }

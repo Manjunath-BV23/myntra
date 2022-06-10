@@ -1,4 +1,4 @@
-import { ADDTOCART } from './action'
+import { ADDTOCART, ADD_ORDER } from './action'
 import { CURRENTITEM } from './action'
 import { ADJUSTQTY} from './action'
 import { REMOVECART} from './action'
@@ -6,6 +6,7 @@ import { REMOVECART} from './action'
 
 const INITIAL_STATE = {
 	cart:[],
+	order:[],
 }
 
 
@@ -25,6 +26,11 @@ export const cartReducer = (state=INITIAL_STATE, action) => {
 		...state,
 		cart:data1
      
+	}
+	case ADD_ORDER : 
+	return {
+		...state,
+		order: action.payload,
 	}
 	case ADJUSTQTY : 
 	return {

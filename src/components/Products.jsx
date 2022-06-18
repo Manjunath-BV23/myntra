@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct, getProductLoading} from "../redux/Products/action";
+import { getProduct, getProductData, getProductLoading} from "../redux/Products/action";
 import {addCart} from '../redux/Cart/action';
 import { Store } from "@mui/icons-material";
 import { usePagination } from "use-pagination-hook";
@@ -22,6 +22,7 @@ export const Products = () => {
     const [tick, setTick] = useState(false)
     const [brandfilter, setBrandfilter] = useState(false)
     const [pricefilter, setPricefilter] = useState(false)
+    const [test, setTest] = useState(true)
 
 
     
@@ -30,8 +31,15 @@ export const Products = () => {
     const dispatch = useDispatch();
     const {products, loading, error} = useSelector((store) => store.products);
     console.log(loading, error)
+    const check = () => {
+        if(test) {
+            return products
+        }else {
+            return productData
+        }
+    }
 
-    const { current, pages, display, next, previous } = usePagination({ items: productData, size: 20 });
+    const { current, pages, display, next, previous } = usePagination({ items: check(), size: 20 });
 
     console.log(" Stored Products ", products);
     const cart = useSelector((store) => store.cart.cart);
@@ -42,28 +50,22 @@ export const Products = () => {
         getData()
     },[]);
 
-    const getProductData = () => async (dispatch) => {
-        dispatch(getProductLoading())
-    
-        const res = await axios.get(`https://my-myntra-api.herokuapp.com/products`)
-        dispatch(getProduct(res.data))
-        
-        setProductData(res.data);
-    }
+
 
    
 
-    const getData = (addData) => {
-        dispatch(getProductData(addData))
+    const getData = () => {
+        dispatch(getProductData())
     }
 
     console.log("DAta:", productData)
 
 
    const sorting = (e) => {
+       setTest(false)
         const sorting = e.target.value;
 
-        const sortRes = [...productData].sort((a, b) => {
+        const sortRes = [...products].sort((a, b) => {
             if (sorting === "low") {
                 return a.price > b.price ? 1 : -1;
             }
@@ -81,6 +83,7 @@ export const Products = () => {
    }
 
    const filterBrand = (e) => {
+    setTest(false)
     const brand = e.target.value;
     console.log(e.target.value)
     const filterData = products.filter((e) => e.brand === brand);
@@ -98,6 +101,7 @@ export const Products = () => {
     }
 }
 const filterDiscount = (e) => {
+    setTest(false)
     const discount = e.target.value;
     console.log(e.target.value)
     const filterData = productData.filter((e) => e.discount >= discount);
@@ -106,6 +110,8 @@ const filterDiscount = (e) => {
 }
 
     const handleCheckedMen = (e) => {
+
+        setTest(false)
         console.log(e.target.value)
     if (e.target.checked) {
             const rows = [...products].filter((row) => row.gender === "Men");
@@ -119,6 +125,7 @@ const filterDiscount = (e) => {
     };
 
     const handleCheckedWomen = (e) => {
+        setTest(false)
         console.log(e.target.value)
 
         if (e.target.checked) {
@@ -133,6 +140,7 @@ const filterDiscount = (e) => {
     }
 
     const handleCheckedKids = (e) => {
+        setTest(false)
         console.log(e.target.value)
 
         if (e.target.checked) {
@@ -147,6 +155,7 @@ const filterDiscount = (e) => {
     }
 
      const handleCheckedGirls = (e) => {
+        setTest(false)
         console.log(e.target.value)
 
          if (e.target.checked) {
@@ -161,6 +170,7 @@ const filterDiscount = (e) => {
     }
 
     const handleOne = (e) => {
+        setTest(false)
          if (e.target.checked) {
              const rows = [...productData].filter((row) => row.price > 0 && row.price <= 1000);
              if(pricefilter == false){
@@ -173,6 +183,8 @@ const filterDiscount = (e) => {
     }
 
     const handleTwo = (e) => {
+
+        setTest(false)
          if (e.target.checked) {
              const rows = productData.filter((row) => row.price > 1000 && row.price <= 1500);
              if(pricefilter == false){
@@ -185,6 +197,7 @@ const filterDiscount = (e) => {
     }
 
       const handleThree = (e) => {
+        setTest(false)
          if (e.target.checked) {
              const rows = [...productData].filter((row) => row.price > 1500 && row.price <= 2000);
              if(pricefilter == false){
@@ -197,6 +210,7 @@ const filterDiscount = (e) => {
     }
 
       const handleFour = (e) => {
+        setTest(false)
          if (e.target.checked) {
              const rows = [...productData].filter((row) => row.price > 2000 && row.price <= 2500);
              if(pricefilter == false){
@@ -211,9 +225,9 @@ const filterDiscount = (e) => {
 
     return  (
         <div className="mainDiv">
-            <div style={{marginLeft:"2%",lineHeight:"30%"}}>
+            <div style={{marginLeft:"2%",lineHeight:"1px"}}>
                 <p style={{fontSize:"18px"}}>Home</p>
-                <p style={{ fontSize: "18px", fontWeight: "700" }}>Myntra Fashion Store<span style={{ color: "grey", fontWeight: "400" }}>-1245 items</span></p>
+                <p style={{ fontSize: "18px", fontWeight: "700" }}>Myntra Fashion Store<span style={{ color: "grey", fontWeight: "400" }}>- {products.length} items</span></p>
                 <div style={{display: "flex"}}>
                     <p className="filters">FILTERS</p>
                     <select className="selectBtn" onChange={sorting}>
@@ -222,7 +236,7 @@ const filterDiscount = (e) => {
                         <option value="high">Price : High to Low</option>
                         <option value="rating">Customer Rating</option>
                     </select>
-                    <input style={{ marginLeft:"2%",width:"25%",height:"35px",marginTop:"15px" }} type="text" placeholder="Search product here" onChange={(e)=>setSearch(e.target.value)}/>
+                    <input style={{ marginLeft:"2%",width:"16%",height:"35px",marginTop:"15px" }} type="text" placeholder="Search product here" onChange={(e)=>setSearch(e.target.value)}/>
                     <div className="btnDivpage">
                         <button className="prevBtn" disabled={current === 1} onClick={previous}>Prev</button>
                         <p className="pageNum">{current}</p>
@@ -311,7 +325,7 @@ const filterDiscount = (e) => {
                                 <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>
                                 <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.category}</p>
                                 <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.discount} %OFF)</p></div>
-                                <button onClick={() => dispatch(addCart(e))}>ADD to Cart</button>
+                                <button className="cartBtn" onClick={() => dispatch(addCart(e))}>ADD to Cart</button>
                             </div>
                         ))
                     }

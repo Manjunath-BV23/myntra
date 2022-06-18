@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import {addUser } from "../redux/User/action";
@@ -13,6 +13,7 @@ export const Login = () => {
         email:"",
         password:"",
     })
+    const [login, setLogin] = useState(false)
     const users = useSelector(store => store.users.users);
     console.log(" users ", users);
     useEffect(()=>{
@@ -30,22 +31,21 @@ export const Login = () => {
     // }
 
 
-    const {email,password} = data;
-
-
+    
+    
     const handleChange = e => {
         setData({...data,[e.target.name]:e.target.value});
     }
+    
+    
+    // console.log("Result "+result);
+    
+    const {email,password} = data;
 
-    let result = users.filter((user) => user.email === email && user.password === password);
-    console.log("Result "+result);
-  
-
-    const handleSubmit = e =>{
-        e.preventDefault()
+    const handleSubmit = () =>{
+        let result = users.filter((user) => user.email === email && user.password === password);
         if(result.length>0){
-            window.location.href = "/products";
-            // getData();
+            setLogin(true)
         }else{
             // window.location.href = "./";
             alert("wrong credintials");
@@ -54,7 +54,7 @@ export const Login = () => {
     
 
 
-    return (
+    return login ?  <Navigate to = {`/products`}></Navigate> :(
         <div id="main">
             <div id="img">
                 <img src="https://assets.myntassets.com/f_webp,dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/2022/1/14/d63fc446-4087-4e07-b2dd-1d060368d2661642184399341-Banner_Login-page-400.png" />

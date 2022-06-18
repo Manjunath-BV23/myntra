@@ -6,6 +6,11 @@ body {
   .navbar {
     overflow: hidden;
     background-color: white;
+    /* border: 1px solid green; */
+    justify-content: space-around;
+    display: flex;
+    width: 60%
+    /* gap: 5px; */
     /* border: 1px solid green;  */
 
   }
@@ -29,7 +34,7 @@ body {
     font-size: 16px;
     color: black;
     text-align: center;
-    padding: 14px 16px;
+    padding: 14px 10px;
     text-decoration: none;
   }
 
@@ -38,24 +43,34 @@ body {
     font-size: 16px;
     color: white;
     text-align: center;
-    padding: 25px 20px 14px 30px;
+    /* padding: 25px 20px 14px 5px; */
     text-decoration: none;
   }
   
   .subnav {
-    float: left;
-    overflow: hidden;
+   text-align: center;
+   align-items: center;
+    /* justify-content: space-between;
+    border: 3px solid red;
+    padding-left: 0%;
+    width: 40px; */
+    /* overflow: hidden; */
     /* border: 1px solid yellow; */
+    padding-top: 2%;
+    height: 30px;
+    cursor: pointer;
   }
-  
-  .subnav .subnavbtn {
-    font-size: 16px;  
-    border: none;
-    outline: none;
+  img{
+    padding-top: 2%;
+  }
+  .subnavbtn {
+    /* font-size: 16px;   */
     color: black;
-    padding: 38px 10px 14px 10px;
+    /* padding: 38px 10px 14px 10px; */
     background-color: inherit;
     font-family: inherit;
+    /* border: 2px solid palevioletred; */
+    padding: 0px;
   }
   
   .navbar a:hover, .subnav:hover .subnavbtn {
@@ -69,8 +84,8 @@ body {
     left: 0;
     background-color: white;
     color: black;
-    width: 80%;
-    margin-left:10%;
+    /* width: 80%; */
+    /* margin-left:10%; */
     z-index: 1;
   }
 
@@ -184,4 +199,15 @@ body {
 
 .drop {
     margin:35px 20px 30px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+}
+.profile {
+  font-weight: bold;
+    font-size: 16px;
+    color: black;
+}
+Link {
+  font-size: px;
 }

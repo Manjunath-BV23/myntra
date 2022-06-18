@@ -70,8 +70,8 @@ export const Cart = () => {
     // const data = useSelector((state) => state.Cart.cart)
 
     return (
-        <div className="main">
-        <div className="rightDiv">
+        // <div className="main">
+        <div className="contentDiv">
             {cart.length < 1 ? <div><img className="emptyImg" src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></div>:
                                 <>{cart.map((e) => (
                                     <div className="mainBox" key={e.id._id}>
@@ -79,7 +79,7 @@ export const Cart = () => {
                                         <p style={{fontSize:"15px",fontWeight:"700"}}>{e.id.brand}</p>
                                         <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.id.category}</p>
                                         <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.id.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.id.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.id.discount} %OFF)</p></div>
-                                        <button className="bg-black text-white p-1 rounded-xl mt-3 " onClick={() => dispatch(removeCart(e.id))}>Remove</button>
+                                        <button className="cartBtn " onClick={() => dispatch(removeCart(e.id))}>Remove</button>
                                     </div>
                                 ))
                             }
@@ -87,7 +87,7 @@ export const Cart = () => {
              }
                             
         </div>
-        <div className="paymentDiv">
+        /* <div className="paymentDiv">
             <h3>PRICE DETAILS ({cart.length} Items)</h3>
             <div>
                 <div className="price">
@@ -117,10 +117,10 @@ export const Cart = () => {
                 </div>
                 <button className="place" onClick={Payment}>Make Payment</button>
             </div>
-        </div>
+        </div> */
         
         
 
-        </div>
+        // </div>
     )
 }

@@ -37,7 +37,7 @@ export const Signup = () => {
     }
 // dispatch(addUser(res.data))
     const getData = () => {
-        axios.get("https://my-myntra-api.herokuapp.com/users").then((res) => dispatch(addUser(res.data)))
+        axios.get("https://new-myntra-api.herokuapp.com/users").then((res) => dispatch(addUser(res.data)))
     }
 
     const handleSubmit = e => {

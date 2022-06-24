@@ -1,9 +1,14 @@
 import "./Payment.css"
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import {createContext, useEffect, useReducer, useState} from "react";
 import {Navigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Scrollbars } from "react-custom-scrollbars-2";
 import { addOrder } from "../redux/Cart/action";
+import Items from "./Items";
+import ContextCart from "./ContextCart";
+import reducer from "./reducer";
+
 
 const Main = styled.div`
 width: 50%;
@@ -14,6 +19,9 @@ display: flex;
 flex-direction: column;
 margin: 25px auto;
 `
+export const CartContext = createContext();
+
+
 
 export const Payment = () => {
   const [card, setCard] = useState({
@@ -29,15 +37,51 @@ export const Payment = () => {
   });
 
   const [qty, setQty] = useState(1)
-  const dispatch = useDispatch();
+//   const dispatch = useDispatch();
   const cart = useSelector((store) => store.cart.cart);
   console.log("CArt in cartpage: ", cart)
   const [showMenu,setShowMenu] = useState(false)
+  const initialState = {
+    item: cart,
+    totalAmount: 25600,
+    totalItems: 0,
+    quantity: 1,
+  };
+  
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const clearCart = () => {
+    return dispatch({ type: "CLEAR_CART" });
+  };
+
+  const removeItem = (id) => {
+    return dispatch({
+      type: "REMOVE_ITEM",
+      payload: id,
+    });
+  };
+
+  const increment = (id) => {
+    return dispatch({
+      type: "INCREMENT",
+      payload: id,
+    });
+  };
+
+  const decrement = (id) => {
+    return dispatch({
+      type: "DECREMENT",
+      payload: id,
+    });
+  };
+
   let totalPrice = 0;
   let disPrice = 0;
   for(var i = 0; i<cart.length; i++){
+        cart[i].id.qty = 1
       totalPrice += cart[i].id.price
       disPrice += cart[i].id.price*(Number(cart[i].id.discount)/100)
+      console.log("Item with QTY", cart[i].id.qty)
   }
   let totalAmount = totalPrice-disPrice;
 
@@ -60,10 +104,14 @@ export const Payment = () => {
       dispatch(addOrder(card))
       setshow(true);
   }
-  const qtyInc = (e) => {
-      console.log("Dic Clicked")
-      setQty(qty+1)
+  const qtyInc = (id) => {
+      console.log("Dic Clicked ID", id)
+    //   setQty(qty+1)
   }
+  const qtyDec = (id) => {
+    console.log("Dic Clicked ID", id)
+  //   setQty(qty+1)
+}
     return  show ?  <Navigate to = {`/successful/`}></Navigate> : (
     <div id="container">
         <div id="content">
@@ -202,13 +250,17 @@ export const Payment = () => {
                                 justifyContent: "center"
                             }}>
                                 <p>Quantity: </p>
-                                <button  className="small">-</button>
-                                <p> { qty } </p>
-                                <button className="small">+</button>
+                                <button  className="small" onclick={qtyInc(e.id._id)}>-</button>
+                                <p> { e.id.qty } </p>
+                                <button className="small" onclick={qtyDec(e.id._id)}>+</button>
                             </div>
                         </div>
                     </div>
                 ))}
+                {/* <CartContext.Provider
+                    value={{ ...state, clearCart, removeItem, increment, decrement }}>
+                    <ContextCart />
+                </CartContext.Provider> */}
                 </div>
                 <h3>PRICE DETAILS ({cart.length} Items)</h3>
             <div style={{
@@ -250,3 +302,7 @@ export const Payment = () => {
     </div>
     )
 }
+
+// export const useGlobalContext = () => {
+//     return useContext(CartContext);
+//   };

@@ -23,14 +23,16 @@ export const Products = () => {
     const [brandfilter, setBrandfilter] = useState(false)
     const [pricefilter, setPricefilter] = useState(false)
     const [test, setTest] = useState(true)
-
-
+    const [disc, setDisc] = useState(false)
+    const [category, setCategory] = useState(false)
     
     const [search, setSearch] = useState("");
     
     const dispatch = useDispatch();
     const {products, loading, error} = useSelector((store) => store.products);
     console.log(loading, error)
+
+
     const check = () => {
         if(test) {
             return products
@@ -64,49 +66,112 @@ export const Products = () => {
    const sorting = (e) => {
        setTest(false)
         const sorting = e.target.value;
+        if(tick == false){
 
-        const sortRes = [...products].sort((a, b) => {
-            if (sorting === "low") {
-                return a.price > b.price ? 1 : -1;
-            }
+            const sortRes = [...products].sort((a, b) => {
+                if (sorting === "low") {
+                    return a.price > b.price ? 1 : -1;
+                }
+    
+                if (sorting === "high") {
+                    return a.price < b.price ? 1 : -1;
+                }
+    
+                if (sorting === "rating") {
+                     return a.ratings < b.ratings ? 1 : -1;
+                }
+            })
+    
+            setProductData(sortRes)
+        }
+        else if(tick == true){
 
-            if (sorting === "high") {
-                return a.price < b.price ? 1 : -1;
-            }
-
-            if (sorting === "rating") {
-                 return a.ratings < b.ratings ? 1 : -1;
-            }
-        })
-
-        setProductData(sortRes)
+            const sortRes = [...productData].sort((a, b) => {
+                if (sorting === "low") {
+                    return a.price > b.price ? 1 : -1;
+                }
+    
+                if (sorting === "high") {
+                    return a.price < b.price ? 1 : -1;
+                }
+    
+                if (sorting === "rating") {
+                     return a.ratings < b.ratings ? 1 : -1;
+                }
+            })
+    
+            setProductData(sortRes)
+        }
    }
 
    const filterBrand = (e) => {
     setTest(false)
     const brand = e.target.value;
     console.log(e.target.value)
-    const filterData = products.filter((e) => e.brand === brand);
-    // if(brand == "H&M"){
-
-    //     setProductData(filterData)
-    // }else {
-    //     setProductData([...productData, ...filterData])
-    // }
-    if(brandfilter === false){
-        setProductData(filterData)
-        setBrandfilter(true)
-    }else {
-        setProductData([...productData, ...filterData]);
+    if(tick == false){
+        if(brand == "all"){
+        
+            setProductData(products)
+        }else {
+            const filterData = products.filter((e) => e.brand === brand);
+            setProductData(filterData)
+        }
     }
+    else {
+
+        if(brand == "all"){
+            
+            setProductData(productData)
+        }else {
+            const filterData = productData.filter((e) => e.brand === brand);
+            setProductData(filterData)
+        }
+    }
+    // if(brandfilter === false){
+    //     setProductData(filterData)
+    //     setBrandfilter(true)
+    // }else {
+    //     setProductData([...productData, ...filterData]);
+    // }
 }
 const filterDiscount = (e) => {
+    
     setTest(false)
     const discount = e.target.value;
     console.log(e.target.value)
-    const filterData = productData.filter((e) => e.discount >= discount);
-    console.log("DIs: ", filterData)
-    setProductData(filterData)
+    if(tick == false){
+        // if(disc == false){
+        //     const filterData = [...products].filter((e) => e.discount >= discount);
+        //     console.log("DIs: ", filterData)
+        //     setProductData(filterData)
+        //     setDisc(true)
+        // }
+        // else {
+        //     const filterData = [...productData].filter((e) => e.discount >= discount);
+        //     console.log("DIs: ", filterData)
+        //     setProductData([...productData, ...filterData])
+        // }
+        const filterData = products.filter((e) => e.discount >= discount);
+        console.log("DIs: ", filterData)
+        setProductData(filterData)
+        setDisc(true)
+
+    }
+    else{
+
+        if(disc == false){
+            const filterData = [...productData].filter((e) => e.discount >= discount);
+            console.log("DIs: ", filterData)
+            setProductData(filterData)
+            setDisc(true)
+        }
+        else {
+            const filterData = [...products].filter((e) => e.discount >= discount);
+            console.log("DIs: ", filterData)
+            setProductData([...productData, ...filterData])
+        }
+    }
+    setTick(true)
 }
 
     const handleCheckedMen = (e) => {
@@ -119,107 +184,205 @@ const filterDiscount = (e) => {
                 setProductData(rows)
                 setTick(true)
             }else {
-                setProductData([...productData, ...rows]);
+                const row = [...productData].filter((row) => row.gender === "Men");
+                if(category  == false){
+                    setProductData(row);
+                }
+                else{
+                    const filt = [...products].filter((row) => row.gender === "Men");
+                    setProductData([...productData, ...filt]);
+                }
             }
+            setCategory(true)
+            setTick(true)
         }
     };
 
     const handleCheckedWomen = (e) => {
         setTest(false)
         console.log(e.target.value)
-
         if (e.target.checked) {
             const rows = [...products].filter((row) => row.gender === "Women");
-            if(tick == false){
+            if(tick === false){
                 setProductData(rows)
                 setTick(true)
             }else {
-                setProductData([...productData, ...rows]);
+                const row = [...productData].filter((row) => row.gender === "Women");
+                if(category  == false){
+                    setProductData(row);
+                }
+                else{
+                    const filt = [...products].filter((row) => row.gender === "Women");
+                    setProductData([...productData, ...filt]);
+                }
             }
+            setCategory(true)
+            setTick(true)
         }
+        // if (e.target.checked) {
+        //     const rows = [...products].filter((row) => row.gender === "Women");
+        //     if(tick == false){
+        //         setProductData(rows)
+        //         setTick(true)
+        //     }else {
+        //         setProductData([...productData, ...rows]);
+        //     }
+        // }
     }
 
     const handleCheckedKids = (e) => {
         setTest(false)
         console.log(e.target.value)
-
         if (e.target.checked) {
-        const rows = [...products].filter((row) => row.gender === "Boys");
-            if(tick == false){
+            const rows = [...products].filter((row) => row.gender === "Women");
+            if(tick === false){
                 setProductData(rows)
                 setTick(true)
             }else {
-                setProductData([...productData, ...rows]);
+                const row = [...productData].filter((row) => row.gender === "Women");
+                if(category  == false){
+                    setProductData(row);
+                }
+                else{
+                    const filt = [...products].filter((row) => row.gender === "Women");
+                    setProductData([...productData, ...filt]);
+                }
             }
+            setCategory(true)
+            setTick(true)
         }
     }
 
      const handleCheckedGirls = (e) => {
         setTest(false)
         console.log(e.target.value)
-
-         if (e.target.checked) {
-             const rows = [...products].filter((row) => row.gender === "Girls");
-             if(tick == false){
+        if (e.target.checked) {
+            const rows = [...products].filter((row) => row.gender === "Women");
+            if(tick === false){
                 setProductData(rows)
                 setTick(true)
             }else {
-                setProductData([...productData, ...rows]);
+                const row = [...productData].filter((row) => row.gender === "Women");
+                if(category  == false){
+                    setProductData(row);
+                }
+                else{
+                    const filt = [...products].filter((row) => row.gender === "Women");
+                    setProductData([...productData, ...filt]);
+                }
             }
-         }
+            setCategory(true)
+            setTick(true)
+        }
     }
 
     const handleOne = (e) => {
         setTest(false)
          if (e.target.checked) {
-             const rows = [...productData].filter((row) => row.price > 0 && row.price <= 1000);
-             if(pricefilter == false){
-                setProductData(rows)
-                setPricefilter(true)
-            }else {
-                setProductData([...productData, ...rows]);
-            }
+             if(tick == false){
+                 const rows = [...products].filter((row) => row.price > 0 && row.price <= 1000);
+                 if(pricefilter == false){
+                    setProductData(rows)
+                    setPricefilter(true)
+                }else {
+                    setProductData([...productData, ...rows]);
+                }
+             }else{
+                 const rows = [...productData].filter((row) => row.price > 0 && row.price <= 1000);
+                 if(pricefilter == false){
+                    setProductData(rows)
+                    setPricefilter(true)
+                }else {
+                    const rows = [...products].filter((row) => row.price > 0 && row.price <= 1000);
+                    setProductData([...productData, ...rows]);
+                }
+
+             }
+             setTick(true)
          }
     }
 
     const handleTwo = (e) => {
-
         setTest(false)
-         if (e.target.checked) {
-             const rows = productData.filter((row) => row.price > 1000 && row.price <= 1500);
-             if(pricefilter == false){
-                setProductData(rows)
-                setPricefilter(true)
-            }else {
-                setProductData([...productData, ...rows]);
+        if (e.target.checked) {
+            if(tick == false){
+                const rows = [...products].filter((row) => row.price > 1000 && row.price <= 1500);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   setProductData([...productData, ...rows]);
+               }
+            }else{
+                const rows = [...productData].filter((row) => row.price > 1000 && row.price <= 1500);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   const rows = [...products].filter((row) => row.price > 1000 && row.price <= 1500);
+                   setProductData([...productData, ...rows]);
+               }
+
             }
-         }
+            setTick(true)
+        }
     }
 
       const handleThree = (e) => {
         setTest(false)
-         if (e.target.checked) {
-             const rows = [...productData].filter((row) => row.price > 1500 && row.price <= 2000);
-             if(pricefilter == false){
-                setProductData(rows)
-                setPricefilter(true)
-            }else {
-                setProductData([...productData, ...rows]);
+        if (e.target.checked) {
+            if(tick == false){
+                const rows = [...products].filter((row) => row.price > 1500 && row.price <= 2000);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   setProductData([...productData, ...rows]);
+               }
+            }else{
+                const rows = [...productData].filter((row) => row.price > 1500 && row.price <= 2000);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   const rows = [...products].filter((row) => row.price > 1500 && row.price <= 2000);
+                   setProductData([...productData, ...rows]);
+               }
+
             }
-         }
+            setTick(true)
+        }
     }
 
       const handleFour = (e) => {
         setTest(false)
-         if (e.target.checked) {
-             const rows = [...productData].filter((row) => row.price > 2000 && row.price <= 2500);
-             if(pricefilter == false){
-                setProductData(rows)
-                setPricefilter(true)
-            }else {
-                setProductData([...productData, ...rows]);
+        if (e.target.checked) {
+            if(tick == false){
+                const rows = [...products].filter((row) => row.price > 2000 && row.price <= 2500);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   setProductData([...productData, ...rows]);
+               }
+            }else{
+                const rows = [...productData].filter((row) => row.price > 2000 && row.price <= 2500);
+                if(pricefilter == false){
+                   setProductData(rows)
+                   setPricefilter(true)
+               }else {
+                   const rows = [...products].filter((row) => row.price > 2000 && row.price <= 2500);
+                   setProductData([...productData, ...rows]);
+               }
+
             }
-         }
+            setTick(true)
+        }
+    }
+
+    const addCartItem = (e) =>{
+        console.log("ADDED", e)
+        dispatch(addCart(e))
     }
     // loading ? ("Loading...."): error ?("Error Occured") :
 
@@ -272,8 +435,8 @@ const filterDiscount = (e) => {
                         <h4>BRAND</h4>
                          <input type="checkbox" value = "H&M" onChange={filterBrand}/><label>H&M</label>
                         <br/>
-                        <input type="checkbox" value = "Maybelline" onChange={filterBrand}/><label>Maybelline</label>
-                        <br/>
+                        <input type="checkbox" value = "all" onChange={filterBrand}/><label>All Brands</label>
+                        {/* <br/>
                         <input type="checkbox" value = "LOreal" onChange={filterBrand}/><label>LOreal</label>
                         <br/>
                         <input type="checkbox" value = "TNW" onChange={filterBrand} /><label>TNW</label>
@@ -286,7 +449,7 @@ const filterDiscount = (e) => {
                          <br/>
                         <input type="checkbox" /><label>Myntra Super</label>
                          <br/>
-                        <input type="checkbox"/><label>OneX</label>
+                        <input type="checkbox"/><label>OneX</label> */}
                     </div>
                     <hr/>
                       <div className="checkDiv1">
@@ -325,7 +488,7 @@ const filterDiscount = (e) => {
                                 <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>
                                 <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.category}</p>
                                 <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.discount} %OFF)</p></div>
-                                <button className="cartBtn" onClick={() => dispatch(addCart(e))}>ADD to Cart</button>
+                                <button className="cartBtn" onClick={() => {addCartItem(e)}}>ADD TO CART</button>
                             </div>
                         ))
                     }

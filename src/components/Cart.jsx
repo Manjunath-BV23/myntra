@@ -15,11 +15,11 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 export const Cart = () => {
-    // const [data, setData] = useState([]);
+    const [data, setData] = useState([]);
 
     const dispatch = useDispatch();
     const cart = useSelector((store) => store.cart.cart);
-    console.log("CArt in cartpage: ", cart)
+    console.log("DATA ", data)
     const [showMenu,setShowMenu] = useState(false)
     let totalPrice = 0;
     let disPrice = 0;
@@ -29,25 +29,22 @@ export const Cart = () => {
     }
     let totalAmount = totalPrice-disPrice;
 
-    // useEffect(() => {
-    //     postData();
-    // },[])
+    useEffect(() => {
+        postData();
+    },[])
 
-    // const postData = () => {
-    //     axios.get("https://myntra123.herokuapp.com/productdetails")
-    //     .then((res) => setCart(res.data));
-    // }
+    const postData = () => {
+        axios.get("https://new-myntra-api.herokuapp.com/cart")
+        .then((res) => setData(res.data));
+    }
 
     // const dataMatter = useSelector((state) => state.cart.cart);
     // console.log(" data "+dataMatter);
 
-    // const remove = (id) => {
-    //     axios.delete(`https://myntra123.herokuapp.com/productdetails/${id}`)
-    //     // .then((res) => setCart(res.data))
-    //     .then(() => postData());
-	// 	console.log(id)
-	// 	dispatch(removeCart(id))	
-	// }
+    // const removeCart = (id) => {
+    //     axios.delete(`https://new-myntra-api.herokuapp.com/cart/${id}`)
+    //     .then((res) => postData);
+    // }
 
 	const done = () => {
 		alert("Congratulation your order is placed")
@@ -72,13 +69,13 @@ export const Cart = () => {
     return (
         // <div className="main">
         <div className="contentDiv">
-            {cart.length < 1 ? <div><img className="emptyImg" src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></div>:
-                                <>{cart.map((e) => (
-                                    <div className="mainBox" key={e.id._id}>
-                                        <img className="prodImg" src={e.id.images} alt="" />
-                                        <p style={{fontSize:"15px",fontWeight:"700"}}>{e.id.brand}</p>
-                                        <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.id.category}</p>
-                                        <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.id.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.id.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.id.discount} %OFF)</p></div>
+            {data.length < 1 ? <div><img className="emptyImg" src="https://cdni.iconscout.com/illustration/premium/thumb/confusing-woman-due-to-empty-cart-4558760-3780056.png" alt="" /></div>:
+                                <>{data.map((e) => (
+                                    <div className="mainBox" key={e._id}>
+                                        <img className="prodImg" src={e.images} alt="" />
+                                        <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>
+                                        <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.category}</p>
+                                        <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.discount} %OFF)</p></div>
                                         <button className="cartBtn " onClick={() => dispatch(removeCart(e.id))}>Remove</button>
                                     </div>
                                 ))

@@ -54,5 +54,3 @@ export const addOrder = (id) => {
 	}
 	
 }
-
-

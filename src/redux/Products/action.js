@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-export const GET_PRODUCT = "ADD_PRODUCT";
+export const GET_PRODUCT = "GET_PRODUCT";
 export const GET_PRODUCT_LOADING = "GET_PRODUCT_LOADING";
 export const GET_PRODUCT_ERROR = "GET_PRODUCT_ERROR";
 

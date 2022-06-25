@@ -8,6 +8,7 @@ import { addOrder } from "../redux/Cart/action";
 import Items from "./Items";
 import ContextCart from "./ContextCart";
 import reducer from "./reducer";
+import axios from "axios";
 
 
 const Main = styled.div`
@@ -36,8 +37,11 @@ export const Payment = () => {
     phone: ""
   });
 
-  const [qty, setQty] = useState(1)
+  const [data, setData] = useState([])
+  const dispatch = useDispatch()
 //   const dispatch = useDispatch();
+    console.log("Payement Data: ", data)
+
   const cart = useSelector((store) => store.cart.cart);
   console.log("CArt in cartpage: ", cart)
   const [showMenu,setShowMenu] = useState(false)
@@ -48,40 +52,22 @@ export const Payment = () => {
     quantity: 1,
   };
   
-  const [state, dispatch] = useReducer(reducer, initialState);
+    useEffect(() => {
+        postData();
+    },[])
 
-  const clearCart = () => {
-    return dispatch({ type: "CLEAR_CART" });
-  };
-
-  const removeItem = (id) => {
-    return dispatch({
-      type: "REMOVE_ITEM",
-      payload: id,
-    });
-  };
-
-  const increment = (id) => {
-    return dispatch({
-      type: "INCREMENT",
-      payload: id,
-    });
-  };
-
-  const decrement = (id) => {
-    return dispatch({
-      type: "DECREMENT",
-      payload: id,
-    });
-  };
+    const postData = () => {
+        axios.get("https://new-myntra-api.herokuapp.com/cart")
+        .then((res) => setData(res.data));
+    }
 
   let totalPrice = 0;
   let disPrice = 0;
-  for(var i = 0; i<cart.length; i++){
-        cart[i].id.qty = 1
-      totalPrice += cart[i].id.price
-      disPrice += cart[i].id.price*(Number(cart[i].id.discount)/100)
-      console.log("Item with QTY", cart[i].id.qty)
+  for(var i = 0; i<data.length; i++){
+        data[i].qty = 1
+      totalPrice += data[i].price
+      disPrice += data[i].price*(Number(data[i].discount)/100)
+      console.log("Item with QTY", data[i].qty)
   }
   let totalAmount = totalPrice-disPrice;
 
@@ -97,7 +83,6 @@ export const Payment = () => {
           [id]: value
       });
   }
-  console.log("Qty:", qty)
 
   const handleSubmit = () => {
     //   alert("Processing your payment")
@@ -239,21 +224,24 @@ export const Payment = () => {
             </div>
             <div id="itemsDiv">
                 <div className="order-summary">
-                {cart.map((e) => (
+                {data.map((e) => (
                     <div className="cartItem">
-                        <img className="cartImg" src={e.id.images} alt="" />
+                        <img className="cartImg" src={e.images} alt="" />
                         <div>
-                            <p>{e.id.title}</p>
-                            <p>Price: {e.id.price}/-</p>
-                            <div style={{
+                            <p>{e.title}</p>
+                            <p>Price: {e.price}/-</p>
+                            <p>Brand: {e.brand}</p>
+                            <p>Color: {e.color}</p>
+
+                            {/* <div style={{
                                 display: "flex",
                                 justifyContent: "center"
                             }}>
                                 <p>Quantity: </p>
-                                <button  className="small" onclick={qtyInc(e.id._id)}>-</button>
-                                <p> { e.id.qty } </p>
-                                <button className="small" onclick={qtyDec(e.id._id)}>+</button>
-                            </div>
+                                <button  className="small" onclick={qtyInc(e._id)}>-</button>
+                                <p> { e.qty } </p>
+                                <button className="small" onclick={qtyDec(e._id)}>+</button>
+                            </div> */}
                         </div>
                     </div>
                 ))}
@@ -262,7 +250,7 @@ export const Payment = () => {
                     <ContextCart />
                 </CartContext.Provider> */}
                 </div>
-                <h3>PRICE DETAILS ({cart.length} Items)</h3>
+                <h3>PRICE DETAILS ({data.length} Items)</h3>
             <div style={{
                 border: "1px solid gray"
             }}>
@@ -302,7 +290,3 @@ export const Payment = () => {
     </div>
     )
 }
-
-// export const useGlobalContext = () => {
-//     return useContext(CartContext);
-//   };

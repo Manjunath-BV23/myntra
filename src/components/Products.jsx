@@ -46,10 +46,11 @@ export const Products = () => {
     console.log(" Stored Products ", products);
     const cart = useSelector((store) => store.cart.cart);
 
-    // console.log("Cart: ", cart)
+    console.log("Cart: ", cart.id)
 
     useEffect(() => {
-        getData()
+        getData();
+        getCart();
     },[]);
 
 
@@ -380,9 +381,18 @@ const filterDiscount = (e) => {
         }
     }
 
+    const getCart = () => {
+       axios.get("https://new-myntra-api.herokuapp.com/cart").then((res) =>{
+
+           dispatch(addCart(res.data))
+       })
+    }
+
     const addCartItem = (e) =>{
         console.log("ADDED", e)
         dispatch(addCart(e))
+
+        axios.post("https://new-myntra-api.herokuapp.com/cart", e).then(() => getCart())
     }
     // loading ? ("Loading...."): error ?("Error Occured") :
 

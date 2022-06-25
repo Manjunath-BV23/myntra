@@ -2,9 +2,21 @@ import React from "react";
 import "../components/Navbar.css";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import axios from "axios";
+import { useEffect } from "react";
 
 export const Navbar = () => {
-    const cart = useSelector((store) => store.cart.cart)
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        postData();
+    },[])
+
+    const postData = () => {
+        axios.get("https://new-myntra-api.herokuapp.com/cart")
+        .then((res) => setData(res.data));
+    }
     return (
         <div className="main" style={{position:"fixed",width:"100%",marginTop:"0px",border:"1px solid black", zIndex:"5"}}>
             <div className="navbar">
@@ -481,7 +493,7 @@ export const Navbar = () => {
                 </div>
                 <Link to="/cart" style={{textDecoration: "none"}}> <div className="drop">CART</div></Link>
                 <Link to="/payment" style={{textDecoration: "none"}}><div className="drop" id = "bag">BAG</div></Link>
-                <small>{cart.length}</small>
+                <small>{data.length}</small>
             </div>
         </div>
     )

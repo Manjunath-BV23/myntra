@@ -14,17 +14,17 @@ export const cartReducer = (state=INITIAL_STATE, action) => {
 
 	switch (action.type) {
     case ADDTOCART : 
-		const check = state.cart.filter((el) => el.id === action.payload.id)
-		if(check.length == 0){
+		// const check = state.cart.filter((el) => el.id === action.payload.id)
+		return {
+			...state,
+			cart: action.payload,
+		}
+		// if(check.length == 0){
 
-			return {
-				...state,
-				cart:[...state.cart, action.payload],
-			}
-		}
-		else {
-			return state
-		}
+		// }
+		// else {
+		// 	return state
+		// }
 
 	case REMOVECART : 
 	const data1 = state.cart.filter((el) => el.id !== action.payload.id)  

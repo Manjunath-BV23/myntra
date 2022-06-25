@@ -109,10 +109,10 @@ export const Payment = () => {
                     <div id="userInfo" className="field">
                         <input id="email" className="inputs" onChange={handleChange} type="text" placeholder="Email ID"/>
                     </div>
-                    <div id="checkbox_input">
+                    {/* <div id="checkbox_input">
                         <input id="box" type="checkbox"/>
                         <label>Email me with news and offers</label>
-                    </div>
+                    </div> */}
                 </div>
                 <div id="mainContent">
                     <h2>Shipping address</h2>
@@ -193,13 +193,13 @@ export const Payment = () => {
                         <h3></h3>
                         <input id="phone" className="inputs" type="text" onChange={handleChange} placeholder="Phone"/>
                     </div>
-                    <div id="checkbox_input">
+                    {/* <div id="checkbox_input">
                         <input  className = "saveAddress"id="box" type="checkbox"/>
                         <label>Save this information for next time</label>
                     </div>
                     <br/>
                     <div id="checkbox_input">
-                        <input className="above18" id="box" type="checkbox"/>
+                        <input className="above18" id="box" type="checkbox"/> */}
                         <label>I am above the age of 18.</label>
                     </div>
 

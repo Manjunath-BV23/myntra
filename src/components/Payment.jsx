@@ -199,9 +199,9 @@ export const Payment = () => {
                     </div>
                     <br/>
                     <div id="checkbox_input">
-                        <input className="above18" id="box" type="checkbox"/> */}
+                        <input className="above18" id="box" type="checkbox"/>
                         <label>I am above the age of 18.</label>
-                    </div>
+                    </div> */}
 
                 </div>
                 <div id="phoneDiv" className="field names">

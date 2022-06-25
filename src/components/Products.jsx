@@ -390,7 +390,7 @@ const filterDiscount = (e) => {
 
     const addCartItem = (e) =>{
         console.log("ADDED", e)
-        dispatch(addCart(e))
+        // dispatch(addCart(e))
 
         axios.post("https://new-myntra-api.herokuapp.com/cart", e).then(() => getCart())
     }

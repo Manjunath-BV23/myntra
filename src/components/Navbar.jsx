@@ -9,6 +9,9 @@ import { useEffect } from "react";
 export const Navbar = () => {
     const [data, setData] = useState([])
 
+    const cart = useSelector((store) => store.cart.cart)
+    console.log("Nav Store:", cart.id)
+
     useEffect(() => {
         postData();
     },[])

@@ -8,7 +8,7 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useSelector } from 'react-redux';
 import ClearIcon from '@mui/icons-material/Clear';
-import {removeCart} from '../redux/Cart/action';
+// import {removeCart} from '../redux/Cart/action';
 import {useDispatch} from 'react-redux';
 import { useEffect } from "react";
 import axios from "axios";
@@ -41,10 +41,10 @@ export const Cart = () => {
     // const dataMatter = useSelector((state) => state.cart.cart);
     // console.log(" data "+dataMatter);
 
-    // const removeCart = (id) => {
-    //     axios.delete(`https://new-myntra-api.herokuapp.com/cart/${id}`)
-    //     .then((res) => postData);
-    // }
+    const removeCart = (id) => {
+        axios.delete(`https://new-myntra-api.herokuapp.com/cart/${id}`)
+        .then((res) => postData);
+    }
 
 	const done = () => {
 		alert("Congratulation your order is placed")
@@ -76,7 +76,7 @@ export const Cart = () => {
                                         <p style={{fontSize:"15px",fontWeight:"700"}}>{e.brand}</p>
                                         <p style={{lineHeight: "1%",color:"#323136",fontSize:"15px"}}>{e.category}</p>
                                         <div style={{ display: 'flex' }}><p style={{ fontSize: "15px", fontWeight: "700" }}>{"Rs. " + e.price}</p><p style={{ marginLeft: "2%", textDecoration: "line-through", fontSize: "13px" }}>{"Rs." + e.off_price}</p><p style={{ marginLeft: "4%", fontSize: "13px", color: "#FF905A" }}>({e.discount} %OFF)</p></div>
-                                        <button className="cartBtn " onClick={() => dispatch(removeCart(e.id))}>Remove</button>
+                                        <button className="cartBtn " onClick={() => removeCart(e._id)}>Remove</button>
                                     </div>
                                 ))
                             }

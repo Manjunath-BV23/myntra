@@ -19,6 +19,8 @@ export const Navbar = () => {
     const postData = () => {
         axios.get("https://new-myntra-api.herokuapp.com/cart")
         .then((res) => setData(res.data));
+
+        // setData(cart.id)
     }
     return (
         <div className="main" style={{position:"fixed",width:"100%",marginTop:"0px",border:"1px solid black", zIndex:"5"}}>

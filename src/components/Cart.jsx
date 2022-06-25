@@ -43,7 +43,7 @@ export const Cart = () => {
 
     const removeCart = (id) => {
         axios.delete(`https://new-myntra-api.herokuapp.com/cart/${id}`)
-        .then((res) => postData);
+        .then((res) => postData());
     }
 
 	const done = () => {

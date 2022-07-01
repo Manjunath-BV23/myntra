@@ -72,7 +72,11 @@ body {
     width:20px;
     height: 20px;
     padding: 0px;
-    margin-left: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.content {
+    line-height: 5px;
 }
 .removeBtn {
     width: 70%;
@@ -113,7 +117,9 @@ h2,
     margin: 0px 14px 0px 0px;
     border-radius: 8px;
 }
-
+#payBtn {
+    margin-left: 0px;
+}
 #userInfo {
     content: "";
     display: flex
@@ -318,7 +324,7 @@ b {
 }
 
 .log-in {
-    background-color: white;
+    background-color: pink;
     color: hsl(334deg 66% 36%);
     padding: 10px 18px;
     border: 1px solid hsl(334deg 66% 36%);
@@ -326,6 +332,12 @@ b {
     border-radius: 3px;
     letter-spacing: 2px;
     margin-left: 0px;
+}
+#deleteBtn {
+    margin-left: 0px;
+    width: 100px;
+    padding: 5px;
+    background-color: rgb(126, 31, 31);
 }
 
 

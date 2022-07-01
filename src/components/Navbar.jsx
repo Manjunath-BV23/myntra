@@ -1,27 +1,33 @@
 import React from "react";
 import "../components/Navbar.css";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import { addCart, getCartData } from "../redux/Cart/action";
 
 export const Navbar = () => {
     const [data, setData] = useState([])
+    const dispatch = useDispatch()
 
     const cart = useSelector((store) => store.cart.cart)
-    console.log("Nav Store:", cart.id)
+    console.log("Nav Store:", data)
 
     useEffect(() => {
-        postData();
+        dispatch(getCartData())
     },[])
 
-    const postData = () => {
-        axios.get("https://new-myntra-api.herokuapp.com/cart")
-        .then((res) => setData(res.data));
+    // const postData = () => {
+    //     axios.get("https://new-myntra-api.herokuapp.com/cart")
+    //     .then((res) => {
+    //         setData(res.data);
+    //         dispatch(addCart(res.data))
+    //     });
+    //     // setData(cart.id)
+    // }
+    // postData();
 
-        // setData(cart.id)
-    }
     return (
         <div className="main" style={{position:"fixed",width:"100%",marginTop:"0px",border:"1px solid black", zIndex:"5"}}>
             <div className="navbar">
@@ -31,8 +37,7 @@ export const Navbar = () => {
                 {/* <a href="#home">Home</a> */}
                 <div className="subnav">
                     <h2 className= "subnavbtn" >MEN</h2>
-                    {/* <button ><b>MEN</b><i class="fa fa-caret-down"></i></button> */}
-                    <div class="subnav-content">
+                    <div className="subnav-content">
                         <div className="myn">
                             <div>
                                 <a href="#company" style={{color:"red"}}>Topwear</a>
@@ -117,8 +122,7 @@ export const Navbar = () => {
                 </div>
                 <div className="subnav">
                     <h2 className= "subnavbtn">WOMEN</h2>
-                    {/* <button class="subnavbtn"><b>WOMEN</b><i class="fa fa-caret-down"></i></button> */}
-                    <div class="subnav-content">
+                    <div className="subnav-content">
                         <div className="myn">
                             <div>
                                 <a href="#company" style={{color:"#ff78c5"}}>Indian & Fusion Wear</a>
@@ -465,7 +469,7 @@ export const Navbar = () => {
                 </div>
                 <div className="subnav">
                     {/* <button className="subnavbtn"><b>STUDIO</b><i className="fa fa-caret-down"></i></button> */}
-                     <Link to="/products" class="subnavbtn"><b>PRODUCTS</b><i class="fa fa-caret-down"></i></Link>
+                     <Link to="/products" className="subnavbtn"><b>PRODUCTS</b><i className="fa fa-caret-down"></i></Link>
                 </div>
             </div>
             <div className="in" >
@@ -498,7 +502,7 @@ export const Navbar = () => {
                 </div>
                 <Link to="/cart" style={{textDecoration: "none"}}> <div className="drop">CART</div></Link>
                 <Link to="/payment" style={{textDecoration: "none"}}><div className="drop" id = "bag">BAG</div></Link>
-                <small>{data.length}</small>
+                <small>{cart.length == 0 ? "" : cart.length}</small>
             </div>
         </div>
     )

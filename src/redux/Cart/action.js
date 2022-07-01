@@ -1,56 +1,42 @@
-export const ADDTOCART = "ADDTOCART"
-export const REMOVECART = "REMOVECART"
-export const ADJUSTQTY = " ADJUSTQTY"
-export const CURRENTITEM = "CURRENTITEM"
-export const ADD_ORDER = "ADD_ORDER"
 
-export const addCart = (id) => {
-	return {
-		type: ADDTOCART,
-		payload:{
-		 id:id
-		}
-	}
-	
-}
-export const removeCart = (id) => {
-	return {
-		type: REMOVECART,
-		payload:{
-		 id:id
-		}
-	}
-	
-}
 
-export const adjustQty = (id,value) => {
-	return {
-		type: ADJUSTQTY,
-		payload:{
-		 id:id,
-		 qty:value
+import axios from "axios";
 
-		}
-	}
-	
+
+export const GET_CART = "GET_CART";
+export const GET_CART_LOADING = "GET_CART_LOADING";
+export const GET_CART_ERROR = "GET_CART_ERROR";
+
+
+
+export const getCart = (cart) => ({type: GET_CART, payload: cart})
+export const getCartLoading = () => ({type: GET_CART_LOADING})
+export const getCartError= () => ({type: GET_CART_ERROR})
+
+export const getCartData = () => async (dispatch) => {
+    dispatch(getCartLoading())
+
+    const res = await axios.get(`https://myntra-updated.herokuapp.com/cart`)
+    dispatch(getCart(res.data))
+    
+    // setProductData(res.data);
 }
 
-export const currentItem = (id,value) => {
-	return {
-		type: CURRENTITEM,
-		payload:{
-		 id:id,
-		 qty:value
-		}
-	}
-	
+export const increaseQty = (id)=>{
+    return {
+        type:"INC",payload :id
+    }
 }
-export const addOrder = (id) => {
-	return {
-		type: ADD_ORDER,
-		payload:{
-		 id:id
-		}
-	}
-	
+
+
+export const deccreaseQty = (id)=>{
+    return {
+        type:"DEC",payload :id
+    }
 }
+export const delteQty = (id)=>{
+    return {
+        type:"REM",payload :id
+    }
+}
+

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct, getProductData, getProductLoading} from "../redux/Products/action";
-import {addCart} from '../redux/Cart/action';
+import {getCartData} from '../redux/Cart/action';
 import { Store } from "@mui/icons-material";
 import { usePagination } from "use-pagination-hook";
 
@@ -382,17 +382,14 @@ const filterDiscount = (e) => {
     }
 
     const getCart = () => {
-       axios.get("https://new-myntra-api.herokuapp.com/cart").then((res) =>{
-
-           dispatch(addCart(res.data))
-       })
+        dispatch(getCartData())
     }
 
     const addCartItem = (e) =>{
         console.log("ADDED", e)
         // dispatch(addCart(e))
 
-        axios.post("https://new-myntra-api.herokuapp.com/cart", e).then(() => getCart())
+        axios.post("https://myntra-updated.herokuapp.com/cart", e).then(() => getCart())
     }
     // loading ? ("Loading...."): error ?("Error Occured") :
 
@@ -509,3 +506,4 @@ const filterDiscount = (e) => {
        </div>
    )
 }
+

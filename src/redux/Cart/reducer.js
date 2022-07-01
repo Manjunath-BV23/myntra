@@ -1,7 +1,4 @@
-import { ADDTOCART, ADD_ORDER } from './action'
-import { CURRENTITEM } from './action'
-import { ADJUSTQTY} from './action'
-import { REMOVECART} from './action'
+
 
 
 const INITIAL_STATE = {
@@ -10,15 +7,51 @@ const INITIAL_STATE = {
 }
 
 
-export const cartReducer = (state=INITIAL_STATE, action) => {
+export const cartReducer = (store=INITIAL_STATE, {type, payload}) => {
 
-	switch (action.type) {
-    case ADDTOCART : 
-		// const check = state.cart.filter((el) => el.id === action.payload.id)
+	switch (type) {
+    case "GET_CART" : 
+		// const check = store.cart.filter((el) => el.id === action.payload.id)
 		return {
-			...state,
-			cart: action.payload,
+			...store,
+			cart: payload,
 		}
+	case "GET_CART_LOADING":
+		return {...store, loading: true}
+	case "GET_CART_ERROR":
+		return {...store, error: true}
+	case "REM":
+			const cartREMOVE = store.cart.filter((ele) => ele._id != payload)
+			console.log('DELETED', cartREMOVE)
+			return { ...store, cart: cartREMOVE }
+
+
+	case "DEC":
+		const decreaseCartIndex = store.cart.findIndex((ele) => ele._id == payload,)
+		if (store.cart[decreaseCartIndex].qty >= 2) {
+			store.cart[decreaseCartIndex].qty -= 1
+			console.log("qty",store.cart[decreaseCartIndex].qty)
+			return {
+				...store,
+				cart: [...store.cart]
+
+			}
+		}
+
+	case "INC":
+		const increaseCartIndex = store.cart.findIndex((ele) => ele._id == payload,)
+		if (store.cart[increaseCartIndex].qty >= 0) {
+			store.cart[increaseCartIndex].qty += 1
+
+
+			return {
+				...store,
+				cart: [...store.cart]
+
+			}
+		}  
+	default :
+		return store
 		// if(check.length == 0){
 
 		// }
@@ -26,27 +59,27 @@ export const cartReducer = (state=INITIAL_STATE, action) => {
 		// 	return state
 		// }
 
-	case REMOVECART : 
-	const data1 = state.cart.filter((el) => el.id !== action.payload.id)  
-	//console.log(data)
-	return {
-		...state,
-		cart:data1
+	// case REMOVECART : 
+	// const data1 = state.cart.filter((el) => el.id !== action.payload.id)  
+	// //console.log(data)
+	// return {
+	// 	...state,
+	// 	cart:data1
      
-	}
-	case ADD_ORDER : 
-	return {
-		...state,
-		order: action.payload,
-	}
-	case ADJUSTQTY : 
-	return {
+	// }
+	// case ADD_ORDER : 
+	// return {
+	// 	...state,
+	// 	order: action.payload,
+	// }
+	// case ADJUSTQTY : 
+	// return {
     
-	}
-	case CURRENTITEM : 
-	return {
+	// }
+	// case CURRENTITEM : 
+	// return {
     
-	}
-	default: return state
+	// }
+	// default: return state
 	}
 }

@@ -1,14 +1,15 @@
 import "./Payment.css"
 import styled from "styled-components";
 import {createContext, useEffect, useReducer, useState} from "react";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Scrollbars } from "react-custom-scrollbars-2";
-import { addOrder } from "../redux/Cart/action";
 import Items from "./Items";
 import ContextCart from "./ContextCart";
 import reducer from "./reducer";
 import axios from "axios";
+import { deccreaseQty, getCartData, increaseQty } from "../redux/Cart/action";
+import { Link } from "react-router-dom";
 
 
 const Main = styled.div`
@@ -34,47 +35,58 @@ export const Payment = () => {
     address: "",
     city: "",
     state: "",
-    phone: ""
+    phone: "",
+    cardNumber:"",
+    name: "",
+    cvv: "",
+    date: ""
   });
 
   const [data, setData] = useState([])
   const dispatch = useDispatch()
+  const navigate = useNavigate();
+
 //   const dispatch = useDispatch();
     console.log("Payement Data: ", data)
 
   const cart = useSelector((store) => store.cart.cart);
   console.log("CArt in cartpage: ", cart)
+  const isAuth = useSelector((store) => store.SignIn.isAuth)
+
   const [showMenu,setShowMenu] = useState(false)
   const initialState = {
-    item: cart,
-    totalAmount: 25600,
-    totalItems: 0,
-    quantity: 1,
+    item: cart
   };
   
     useEffect(() => {
-        postData();
+        dispatch(getCartData())
     },[])
 
-    const postData = () => {
-        axios.get("https://new-myntra-api.herokuapp.com/cart")
-        .then((res) => setData(res.data));
-    }
 
-  let totalPrice = 0;
-  let disPrice = 0;
-  for(var i = 0; i<data.length; i++){
-        data[i].qty = 1
-      totalPrice += data[i].price
-      disPrice += data[i].price*(Number(data[i].discount)/100)
-      console.log("Item with QTY", data[i].qty)
+
+  let totalOffPrice = 0;
+  let totalAmount = 0
+  for(var i = 0; i<cart.length; i++){
+    
+    totalOffPrice+=cart[i].qty * cart[i].off_price
+    totalAmount += cart[i].qty * cart[i].price
+      
   }
-  let totalAmount = totalPrice-disPrice;
+//   let totalAmount = totalPrice-disPrice;
+
+
+const incrementQuantity = (id) => {
+    dispatch(increaseQty(id))
+}
+const decrementQuantity = (id) => {
+    dispatch(deccreaseQty(id))
+}
 
   const [show, setshow] = useState(false);
 //   useEffect(() => {
 //     qtyInc()
 // },[]);
+
 
   const handleChange = (e) => {
       const {id, value} = e.target;
@@ -84,18 +96,42 @@ export const Payment = () => {
       });
   }
 
+  const Proceed = () => {
+    const {email, pin, country} = card;
+    if(email && pin && country){
+        navigate("/successful")
+    }else{
+        alert("Please fill all the details")
+    }
+  }
+  const ProceedToLogin = () => {
+    const {email, pin, country} = card;
+    if(email && pin && country){
+        navigate("/signup")
+    }else{
+        alert("Please fill all the details")
+    }
+  }
+
   const handleSubmit = () => {
     //   alert("Processing your payment")
-      dispatch(addOrder(card))
+    //   dispatch(addOrder(card))
       setshow(true);
   }
+  const deleteItem = (id) => {
+    axios.delete(`https://myntra-updated.herokuapp.com/cart/${id}`)
+    .then((res) => dispatch(getCartData()));
+}
   const qtyInc = (id) => {
-      console.log("Dic Clicked ID", id)
+    let item = cart.findIndex((e) => e._id = id)
+    cart[item].qty += 1 
+      console.log("Dic Clicked ID", cart[item].qty)
     //   setQty(qty+1)
   }
   const qtyDec = (id) => {
-    console.log("Dic Clicked ID", id)
-  //   setQty(qty+1)
+    let item = cart.findIndex((e) => e._id = id)
+    cart[item].qty -= 1 
+      console.log("Dic Clicked ID", cart[item].qty)
 }
     return  show ?  <Navigate to = {`/successful/`}></Navigate> : (
     <div id="container">
@@ -193,15 +229,6 @@ export const Payment = () => {
                         <h3></h3>
                         <input id="phone" className="inputs" type="text" onChange={handleChange} placeholder="Phone"/>
                     </div>
-                    {/* <div id="checkbox_input">
-                        <input  className = "saveAddress"id="box" type="checkbox"/>
-                        <label>Save this information for next time</label>
-                    </div>
-                    <br/>
-                    <div id="checkbox_input">
-                        <input className="above18" id="box" type="checkbox"/>
-                        <label>I am above the age of 18.</label>
-                    </div> */}
 
                 </div>
                 <div id="phoneDiv" className="field names">
@@ -211,7 +238,16 @@ export const Payment = () => {
                     <input onChange = {handleChange} className="inputs" id = "date" type="date" name="" placeholder = "Enter Card Expiry Date "  required/>
                 </div>
                 <div id="buttonDiv">
-                    <button id="proceed" onClick={handleSubmit}>Proceed to pay</button>
+                    {/* <button id="proceed" onClick={handleSubmit}>Proceed to pay</button> */}
+                    { isAuth == true ? <button onClick={() => Proceed()}id="payBtn">
+                    Proceed to Checkout
+                </button> : <button onClick={
+                        () => ProceedToLogin()
+                    }
+                    id="payBtn">
+                    Proceed to Checkout
+                </button>
+            }
                 </div>
                 <hr/>
                 <footer>
@@ -224,24 +260,27 @@ export const Payment = () => {
             </div>
             <div id="itemsDiv">
                 <div className="order-summary">
-                {data.map((e) => (
+                {cart.map((e) => (
                     <div className="cartItem">
+                        {/* {totalOffPrice+=e.qty * e.off_price}
+                        {totalAmount += e.qty * e.price} */}
                         <img className="cartImg" src={e.images} alt="" />
-                        <div>
+                        <div className="content">
                             <p>{e.title}</p>
                             <p>Price: {e.price}/-</p>
-                            <p>Brand: {e.brand}</p>
-                            <p>Color: {e.color}</p>
+                            {/* <p>Brand: {e.brand}</p>
+                            <p>Color: {e.color}</p> */}
 
-                            {/* <div style={{
+                            <div style={{
                                 display: "flex",
                                 justifyContent: "center"
                             }}>
                                 <p>Quantity: </p>
-                                <button  className="small" onclick={qtyInc(e._id)}>-</button>
+                                <button  className="small" onClick={() =>  decrementQuantity(e._id)}>-</button>
                                 <p> { e.qty } </p>
-                                <button className="small" onclick={qtyDec(e._id)}>+</button>
-                            </div> */}
+                                <button className="small" onClick={() => incrementQuantity(e._id)}>+</button>
+                            </div>
+                            <button id = "deleteBtn" onClick={()=>deleteItem(e._id)}>Remove</button>
                         </div>
                     </div>
                 ))}
@@ -250,17 +289,18 @@ export const Payment = () => {
                     <ContextCart />
                 </CartContext.Provider> */}
                 </div>
-                <h3>PRICE DETAILS ({data.length} Items)</h3>
+                <br />
+                <h3>PRICE DETAILS ({cart.length} Items)</h3>
             <div style={{
                 border: "1px solid gray"
             }}>
                 <div className="price">
                     <p>Total MRP</p>
-                    <p>{totalPrice}/-</p>
+                    <p>{totalOffPrice}/-</p>
                 </div>
                 <div className="price">
                     <p>Discount on MRP</p>
-                    <p>{disPrice}/-</p>
+                    <p>{totalOffPrice-totalAmount}/-</p>
                 </div>
                 <div className="price">
                     <p>Coupon Discount</p>
@@ -282,7 +322,7 @@ export const Payment = () => {
                 {/* <button className="place" onClick={Payment}>Make Payment</button> */}
             </div>    
                 <div className="total">
-                    <button className="log-in" onclick="./login">LOGIN / REGISTER</button>
+                    <Link to={"/login"}><button className="log-in">LOGIN / REGISTER</button></Link>
                 </div>
             </div>
 

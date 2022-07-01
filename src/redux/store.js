@@ -3,12 +3,14 @@ import {userReducer } from "./User/reducer";
 import { productReducer } from "./Products/reducer";
 import { combineReducers } from "redux";
 import { cartReducer } from "./Cart/reducer";
+import { loginReducer } from "./signin/reducer";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
     users: userReducer,
     products : productReducer,
     cart : cartReducer,
+    SignIn: loginReducer,
 })
 
 const loggerMiddleware = (store)=>(next)=>(action) =>{

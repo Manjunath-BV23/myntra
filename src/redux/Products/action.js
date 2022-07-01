@@ -14,7 +14,7 @@ export const getProductError= () => ({type: GET_PRODUCT_ERROR})
 export const getProductData = () => async (dispatch) => {
     dispatch(getProductLoading())
 
-    const res = await axios.get(`https://new-myntra-api.herokuapp.com/products`)
+    const res = await axios.get(`https://myntra-updated.herokuapp.com/products`)
     dispatch(getProduct(res.data))
     
     // setProductData(res.data);

@@ -52,6 +52,7 @@ export const Payment = () => {
   const cart = useSelector((store) => store.cart.cart);
   console.log("CArt in cartpage: ", cart)
   const isAuth = useSelector((store) => store.SignIn.isAuth)
+  console.log("IsAuth", isAuth)
 
   const [showMenu,setShowMenu] = useState(false)
   const initialState = {
@@ -97,16 +98,16 @@ const decrementQuantity = (id) => {
   }
 
   const Proceed = () => {
-    const {email, pin, country} = card;
-    if(email && pin && country){
+    const {email, pin, country, firstName, lastName, address, city, state, phone, cardNumber, name, cvv, date} = card;
+    if(email && pin && country && firstName && lastName && address && city && state && phone && cardNumber && name && cvv && date){
         navigate("/successful")
     }else{
         alert("Please fill all the details")
     }
   }
   const ProceedToLogin = () => {
-    const {email, pin, country} = card;
-    if(email && pin && country){
+    const {email, pin, country, firstName, lastName, address, city, state, phone, cardNumber, name, cvv, date} = card;
+    if(email && pin && country && firstName && lastName && address && city && state && phone && cardNumber && name && cvv && date){
         navigate("/signup")
     }else{
         alert("Please fill all the details")

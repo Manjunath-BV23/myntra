@@ -32,7 +32,7 @@ export const Cart = () => {
     }
     let disPrice = totalOffPrice-presentPrice
 
-    console.log(presentPrice, disPrice, totalOffPrice)
+    console.log(totalOffPrice, presentPrice, disPrice, )
     // let totalAmount = totalPrice-disPrice;
 
     useEffect(() => {

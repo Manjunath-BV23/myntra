@@ -51,6 +51,7 @@ export const Products = () => {
     useEffect(() => {
         getData();
         getCart();
+        // callBack()
     },[]);
 
 
@@ -174,6 +175,12 @@ const filterDiscount = (e) => {
     }
     setTick(true)
 }
+const callBack  = ()=>{
+    handleCheckedMen()
+    handleCheckedGirls()
+    handleCheckedKids()
+    handleCheckedWomen()
+}
 
     const handleCheckedMen = (e) => {
 
@@ -196,6 +203,9 @@ const filterDiscount = (e) => {
             }
             setCategory(true)
             setTick(true)
+        }
+        else{
+            setProductData(products)
         }
     };
 

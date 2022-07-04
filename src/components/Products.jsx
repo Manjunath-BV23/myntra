@@ -27,6 +27,7 @@ export const Products = () => {
     const [category, setCategory] = useState(false)
     
     const [search, setSearch] = useState("");
+    let cat = 0
     
     const dispatch = useDispatch();
     const {products, loading, error} = useSelector((store) => store.products);
@@ -153,7 +154,7 @@ const filterDiscount = (e) => {
         //     console.log("DIs: ", filterData)
         //     setProductData([...productData, ...filterData])
         // }
-        const filterData = products.filter((e) => e.discount >= discount);
+        const filterData = products.filter((e) => Number(e.discount) >= discount);
         console.log("DIs: ", filterData)
         setProductData(filterData)
         setDisc(true)
@@ -162,13 +163,13 @@ const filterDiscount = (e) => {
     else{
 
         if(disc == false){
-            const filterData = [...productData].filter((e) => e.discount >= discount);
+            const filterData = [...productData].filter((e) => Number(e.discount) >= discount);
             console.log("DIs: ", filterData)
             setProductData(filterData)
             setDisc(true)
         }
         else {
-            const filterData = [...products].filter((e) => e.discount >= discount);
+            const filterData = [...products].filter((e) => Number(e.discount) >= discount);
             console.log("DIs: ", filterData)
             setProductData([...productData, ...filterData])
         }
@@ -203,9 +204,14 @@ const callBack  = ()=>{
             }
             setCategory(true)
             setTick(true)
+            cat++
         }
-        else{
-            setProductData(products)
+        else {
+            if(cat == 0){
+
+                setProductData(products)
+            }
+            cat--
         }
     };
 
@@ -229,6 +235,14 @@ const callBack  = ()=>{
             }
             setCategory(true)
             setTick(true)
+            cat++
+        }
+        else {
+            if(cat == 0){
+
+                setProductData(products)
+            }
+            cat--
         }
         // if (e.target.checked) {
         //     const rows = [...products].filter((row) => row.gender === "Women");
@@ -245,22 +259,30 @@ const callBack  = ()=>{
         setTest(false)
         console.log(e.target.value)
         if (e.target.checked) {
-            const rows = [...products].filter((row) => row.gender === "Women");
+            const rows = [...products].filter((row) => row.gender === "Boys");
             if(tick === false){
                 setProductData(rows)
                 setTick(true)
             }else {
-                const row = [...productData].filter((row) => row.gender === "Women");
+                const row = [...productData].filter((row) => row.gender === "Boys");
                 if(category  == false){
                     setProductData(row);
                 }
                 else{
-                    const filt = [...products].filter((row) => row.gender === "Women");
+                    const filt = [...products].filter((row) => row.gender === "Boys");
                     setProductData([...productData, ...filt]);
                 }
             }
             setCategory(true)
             setTick(true)
+            cat++
+        }
+        else {
+            if(cat == 0){
+
+                setProductData(products)
+            }
+            cat--
         }
     }
 
@@ -268,22 +290,30 @@ const callBack  = ()=>{
         setTest(false)
         console.log(e.target.value)
         if (e.target.checked) {
-            const rows = [...products].filter((row) => row.gender === "Women");
+            const rows = [...products].filter((row) => row.gender === "Girls");
             if(tick === false){
                 setProductData(rows)
                 setTick(true)
             }else {
-                const row = [...productData].filter((row) => row.gender === "Women");
+                const row = [...productData].filter((row) => row.gender === "Girls");
                 if(category  == false){
                     setProductData(row);
                 }
                 else{
-                    const filt = [...products].filter((row) => row.gender === "Women");
+                    const filt = [...products].filter((row) => row.gender === "Girls");
                     setProductData([...productData, ...filt]);
                 }
             }
             setCategory(true)
             setTick(true)
+            cat++
+        }
+        else {
+            if(cat == 0){
+
+                setProductData(products)
+            }
+            cat--
         }
     }
 

@@ -44,6 +44,12 @@ body {
     line-height: 1.3em;
     margin-top: 50px;
 }
+.title {
+    /* display: flex; */
+    flex-direction: y;
+    width: 100%;
+    line-height: 5px;
+}
 
 #paymentDiv {
     width: 58%;

@@ -267,7 +267,7 @@ const decrementQuantity = (id) => {
                         {totalAmount += e.qty * e.price} */}
                         <img className="cartImg" src={e.images} alt="" />
                         <div className="content">
-                            <p>{e.title}</p>
+                            <p className="title">{e.title}</p>
                             <p>Price: {e.price}/-</p>
                             {/* <p>Brand: {e.brand}</p>
                             <p>Color: {e.color}</p> */}

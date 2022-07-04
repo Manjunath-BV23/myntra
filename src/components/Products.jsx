@@ -207,11 +207,16 @@ const callBack  = ()=>{
             cat++
         }
         else {
-            if(cat == 0){
-
-                setProductData(products)
-            }
             cat--
+            if(cat <= 0){
+                
+                setProductData(products)
+                // setTick(false)
+            }
+            // else{
+            //     const filt = [...products].filter((row) => row.gender === "Men");
+            //     setProductData([...productData, ...filt]);
+            // }
         }
     };
 
@@ -238,11 +243,16 @@ const callBack  = ()=>{
             cat++
         }
         else {
-            if(cat == 0){
-
-                setProductData(products)
-            }
             cat--
+            if(cat <= 0){
+                
+                setProductData(products)
+                // setTick(false)
+            }
+            // else{
+            //     const filt = [...products].filter((row) => row.gender === "Women");
+            //     setProductData([...productData, ...filt]);
+            // }
         }
         // if (e.target.checked) {
         //     const rows = [...products].filter((row) => row.gender === "Women");
@@ -278,11 +288,17 @@ const callBack  = ()=>{
             cat++
         }
         else {
-            if(cat == 0){
-
-                setProductData(products)
-            }
             cat--
+            if(cat <= 0){
+                
+                setProductData(products)
+                // setTick(false)
+                
+            }
+            // else{
+            //     const filt = [...products].filter((row) => row.gender === "Boys");
+            //     setProductData([...productData, ...filt]);
+            // }
         }
     }
 
@@ -309,11 +325,16 @@ const callBack  = ()=>{
             cat++
         }
         else {
-            if(cat == 0){
-
-                setProductData(products)
-            }
             cat--
+            if(cat <= 0){
+                
+                setProductData(products)
+                
+            }
+            // else{
+            //     const filt = [...products].filter((row) => row.gender === "Girls");
+            //     setProductData([...productData, ...filt]);
+            // }
         }
     }
 
